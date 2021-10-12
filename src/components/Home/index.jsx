@@ -1,11 +1,15 @@
 import React, { Component } from 'react'
 
+// components
+import PageLayout from '../PageLayout'
 export default class index extends Component {
     render() {
         return (
-            <div>
-                Home Page
-            </div>
+            <PageLayout>
+                <div>
+                    HomePage
+                </div>
+            </PageLayout>
         )
     }
 }
