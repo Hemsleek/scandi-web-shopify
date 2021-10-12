@@ -1,21 +1,25 @@
-import React from 'react';
-import './App.css';
+import React, { Component, Fragment } from "react";
+import Routes from "./Routes";
 
+//global styles
+import GlobalStyle from "./globalStyles";
+class App extends Component {
+  constructor(props) {
+    super(props);
 
-class App extends React.Component {
-constructor(props) {
-  super(props);
-
-  this.state = {
-  };
-}
+    this.state = {};
+  }
 
   render() {
-    return (<div className='App'>
-
-    </div>)
+    return (
+      <Fragment>
+        <GlobalStyle />
+        <div className="App">
+          <Routes />
+        </div>
+      </Fragment>
+    );
   }
 }
-
 
 export default App;
