@@ -23,15 +23,22 @@ class index extends React.Component {
       tabs: "Women,Men,Kids".split(","),
       activeTab: "Women",
       filterOptions: "$ USD,€ EUR,¥ JPY".split(","),
-      showFilteredOption: false,
+      showFilterOptions: false,
+      
     };
-    this.toggleShowFilters = this.toggleShowFilters.bind(this);
+    this.toggleFilter = this.toggleFilter.bind(this);
   }
-  toggleShowFilters() {
-
-    this.setState((state) => ({
-      showFilteredOption: !state.showFilteredOption,
-    }));
+  toggleFilter() {
+    // if (type === "filter") {
+      this.setState((CurrentState) => ({
+        showFilterOptions: !CurrentState.showFilterOptions,
+      }));
+    // } 
+    // else {
+    //   this.setState((CurrentState) => ({
+    //     isCartOpen: !CurrentState.isCartOpen,
+    //   }));
+    // }
   }
 
   render() {
@@ -53,20 +60,20 @@ class index extends React.Component {
         <ImgWrapper src="/assets/vectors/brand-icon.svg" alt="brand-icon" />
         <SideActionsWrapper>
           <SideActions>
-            <Filter onClick={() => this.toggleShowFilters()}>
+            <Filter onClick={() => this.toggleFilter()}>
               <ImgWrapper src="/assets/vectors/dollar.svg" alt="dollar-icon" />
               <ImgWrapper
                 src="/assets/vectors/caret-arrow.svg"
                 alt="caret-arrow"
-                rotate={this.state.showFilteredOption}
+                rotate={this.state.showFilterOptions}
               />
             </Filter>
-            <Cart>
+            <Cart onClick={() => this.props.toggleCart()}>
               <Badges>2</Badges>
               <ImgWrapper src="/assets/vectors/cart.svg" alt="cart-icon" />
             </Cart>
           </SideActions>
-          {this.state.showFilteredOption && (
+          {this.state.showFilterOptions && (
             <FilterOptions>
               {this.state.filterOptions.map((option, optionIndex) => (
                 <Option key={`filter-option-index${optionIndex}`}>

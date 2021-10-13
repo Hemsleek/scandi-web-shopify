@@ -10,6 +10,7 @@ export const Wrapper = styled.div`
 `
 
 export const Content = styled.div`
+    position:relative;
     flex-grow: 1;
     padding:5rem 6.31rem 0 7.31rem;
     overflow-y:auto;

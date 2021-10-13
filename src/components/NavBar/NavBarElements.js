@@ -52,7 +52,6 @@ export const ImgWrapper = styled.img`
 
 export const SideActionsWrapper = styled.div`
     display:flex;
-    align-self: flex-end;
     flex-direction: column;
     position:relative;
 `
@@ -83,6 +82,7 @@ export const Badges = styled.div`
 export const FilterOptions = styled.div`
     position:absolute;
     display:flex;
+    z-index:500;
     flex-direction:column;
     bottom:-490%;
     left:0;
