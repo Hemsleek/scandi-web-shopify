@@ -3,6 +3,9 @@ import Routes from "./Routes";
 
 //global styles
 import GlobalStyle from "./globalStyles";
+
+//Components
+import PageLayout from './components/PageLayout'
 class App extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +18,9 @@ class App extends Component {
       <Fragment>
         <GlobalStyle />
         <div className="App">
-          <Routes />
+          <PageLayout>
+            <Routes />
+          </PageLayout>
         </div>
       </Fragment>
     );

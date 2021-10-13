@@ -1,15 +1,21 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from "react";
 
 // components
-import PageLayout from '../PageLayout'
+import ProductCard from "../ProductCard/index";
+import { ProductWrapper, Title } from "./HomeElements";
 export default class index extends Component {
-    render() {
-        return (
-            <PageLayout>
-                <div>
-                    HomePage
-                </div>
-            </PageLayout>
-        )
-    }
+  render() {
+    return (
+      <Fragment>
+        <Title>Category name</Title>
+        <ProductWrapper>
+          {Array(6)
+            .fill(" ")
+            .map((product, productIndex) => (
+              <ProductCard key={`category-product-index${productIndex}`} />
+            ))}
+        </ProductWrapper>
+      </Fragment>
+    );
+  }
 }
