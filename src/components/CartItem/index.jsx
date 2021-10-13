@@ -11,23 +11,23 @@ constructor(props) {
 
     render() {
         return (
-        <CartItemContainer>
-            <CardDetails>
+        <CartItemContainer large={this.props.large}>
+            <CardDetails large={this.props.large}>
             
 
-                <ItemName>Apollo</ItemName>
+                <ItemName large={this.props.large}>Apollo</ItemName>
                 <ItemDesc>Running Short</ItemDesc>
-                <ItemPrice>$50.00</ItemPrice>
-                <Sizes>
-                    <Size>S</Size>
-                    <SizeM>M</SizeM>
+                <ItemPrice large={this.props.large}>$50.00</ItemPrice>
+                <Sizes large={this.props.large}>
+                    <Size large={this.props.large}>S</Size>
+                    <SizeM large={this.props.large}>M</SizeM>
                 </Sizes>
             </CardDetails>
             <ItemDisplayContainer>
                 <ItemQuantityWrapper>
-                    <AddButton>+</AddButton>
+                    <AddButton large={this.props.large}>+</AddButton>
                     <ItemQuantity>1</ItemQuantity>
-                    <MinusButton>-</MinusButton>
+                    <MinusButton large={this.props.large}>-</MinusButton>
                 </ItemQuantityWrapper>
                 <ItemDisplay>
                     <ChevronArrowLeft src='/assets/vectors/arrow.svg' alt='chevron-arrow'/>

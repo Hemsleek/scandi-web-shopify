@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 
 // components
-import ProductCard from "../ProductCard/index";
+import ProductCard from "../../components/ProductCard/index";
 import { ProductWrapper, Title } from "./HomeElements";
 export default class index extends Component {
   render() {
