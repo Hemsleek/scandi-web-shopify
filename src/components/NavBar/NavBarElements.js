@@ -6,18 +6,31 @@ export const NavBarContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     padding:0 6.31rem 0 7.31rem;
+    color:#1D1F22;
 
 `
 
 export const NavTabs = styled.div`
     display:flex;
+    height:100%;
     align-items: center;
     column-gap:2rem;
 
+    
 `
 
 export const Tab = styled.span`
+    height:100%;
+    display:flex;
+    align-items:center;
+    border-bottom:2px solid transparent;
+    cursor:pointer;
 
+    &.active{
+        color:#5ECE7B;
+        border-bottom-color:#5ECE7B;
+        font-weight:600;
+    }
 `
 export const Filter = styled.div`
     display:flex;
