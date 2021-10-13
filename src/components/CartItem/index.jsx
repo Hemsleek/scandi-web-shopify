@@ -1,5 +1,5 @@
 import React from 'react';
-import { CartItemWrapper } from '../CartOverlay/CartOverlayElements';
+import { AddButton, CardDetails, CartItemContainer, ItemImage, ItemDesc, ItemDisplay, ItemDisplayContainer, ItemName, ItemPrice, ItemQuantity, ItemQuantityWrapper, MinusButton, Size, Sizes, SizeM, ChevronArrow, ChevronArrowLeft } from './CartItemElements';
 
 class index extends React.Component {
 constructor(props) {
@@ -11,9 +11,31 @@ constructor(props) {
 
     render() {
         return (
-        <CartItemWrapper>
-            cart item
-        </CartItemWrapper>
+        <CartItemContainer>
+            <CardDetails>
+            
+
+                <ItemName>Apollo</ItemName>
+                <ItemDesc>Running Short</ItemDesc>
+                <ItemPrice>$50.00</ItemPrice>
+                <Sizes>
+                    <Size>S</Size>
+                    <SizeM>M</SizeM>
+                </Sizes>
+            </CardDetails>
+            <ItemDisplayContainer>
+                <ItemQuantityWrapper>
+                    <AddButton>+</AddButton>
+                    <ItemQuantity>1</ItemQuantity>
+                    <MinusButton>-</MinusButton>
+                </ItemQuantityWrapper>
+                <ItemDisplay>
+                    <ChevronArrowLeft src='/assets/vectors/arrow.svg' alt='chevron-arrow'/>
+                    <ChevronArrow src='/assets/vectors/arrow.svg'  alt='chevron-arrow'/>
+                    <ItemImage src='/assets/images/cart-item.png' alt="cart-item" />
+                </ItemDisplay>
+            </ItemDisplayContainer>
+        </CartItemContainer>
         )
     }
 }

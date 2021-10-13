@@ -15,6 +15,7 @@ export const NavTabs = styled.div`
     height:100%;
     align-items: center;
     column-gap:2rem;
+    margin-bottom:0.1rem;
 
     
 `

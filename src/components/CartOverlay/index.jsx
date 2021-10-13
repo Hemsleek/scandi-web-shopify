@@ -1,10 +1,9 @@
 import React from 'react';
 import { Title } from '../ProductCard/ProductCardElements';
-import { BoldText, CartItemWrapper, CartOverlayWrapper, MiniCart, SmallText } from './CartOverlayElements';
+import { BoldText, CartItemWrapper, CartOverlayWrapper, MiniCart, SmallText,ActionButtons, CheckOut, CostLabel, CostValue, TotalCost, ViewBag } from './CartOverlayElements';
 
 //Components
 import CartItem from '../CartItem'
-import { ActionButtons, CheckOut, CostLabel, CostValue, TotalCost, ViewBag } from '../CartItem/CartItemElements';
 
 class index extends React.Component {
 constructor(props) {
