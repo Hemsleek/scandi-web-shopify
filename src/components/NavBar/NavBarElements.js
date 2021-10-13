@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 
 export const NavBarContainer = styled.div`
     height:5rem;
@@ -45,9 +45,21 @@ export const Cart = styled.div`
 
 export const ImgWrapper = styled.img`
 
+    ${props => props.rotate && css`
+        transform: rotate(180deg);
+    `}
 `
 
-export const SideActions = styled(NavTabs)`
+export const SideActionsWrapper = styled.div`
+    display:flex;
+    align-self: flex-end;
+    flex-direction: column;
+    position:relative;
+`
+
+export const SideActions = styled.div`
+    display:flex;
+    align-items: center;
     column-gap:1.3rem;
 `
 
@@ -66,4 +78,24 @@ export const Badges = styled.div`
     position:absolute;
     right:-0.7rem;
     top:-0.7rem;
+`
+
+export const FilterOptions = styled.div`
+    position:absolute;
+    display:flex;
+    flex-direction:column;
+    bottom:-490%;
+    left:0;
+    background-color: #fff;
+    width:100%;
+    padding:1.25rem 0 0 1.25rem;
+    font-size:1.125rem;
+    font-weight:500;
+    color:#1D1F22;
+    box-shadow:0px 4px 35px rgba(168, 172, 176, 0.19);
+`
+
+export const Option = styled.span`
+    cursor: pointer;
+    margin-bottom:1.31rem;
 `
