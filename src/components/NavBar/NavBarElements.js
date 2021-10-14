@@ -36,6 +36,7 @@ export const Tab = styled.span`
 export const Filter = styled.div`
     display:flex;
     align-items: center;
+    user-select:none;
 `
 
 export const CurrencyDisplay = styled.span`
