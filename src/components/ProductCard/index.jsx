@@ -14,8 +14,8 @@ export default class ProductCard extends Component {
     return (
       <ProductWrapper>
         <PrdImgWrapper>
-            
-          <CartImg src="/assets/vectors/cart.svg" alt='green-cart' />
+
+          <CartImg src="/assets/vectors/green-cart.svg" alt='green-cart' />
           <Image src="/assets/images/cat-image.png"  alt="product-image"/>
         </PrdImgWrapper>
         <PrdContent>

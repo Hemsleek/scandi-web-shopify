@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 
 export const ProductWrapper = styled.div`
     padding:1rem;
+    transition:0.2s all ease-in-out;
     
     ${props => props.outOfStock && css`
     opacity:0.5;
