@@ -1,4 +1,7 @@
 import React from "react";
+import {connect} from 'react-redux' 
+import { changeCurrency, setCategory, toggleCart } from "../../store/actions";
+
 
 //Components Styles
 import {
@@ -21,29 +24,30 @@ class index extends React.Component {
     super(props);
 
     this.state = {
-      tabs: "Women,Men,Kids".split(","),
-      activeTab: "Women",
       filterOptions: "$ USD,€ EUR,¥ JPY".split(","),
       showFilterOptions: false,
-      currency:'$'
       
     };
+
     this.toggleFilter = this.toggleFilter.bind(this);
     this.handleCurrencyChange= this.handleCurrencyChange.bind(this);
+
   }
+
   toggleFilter() {
       this.setState((CurrentState) => ({
         showFilterOptions: !CurrentState.showFilterOptions,
       }));
     
   }
+
   handleCurrencyChange(currency){
-      this.setState({currency:currency[0]})
+      this.props.changeCurrency(currency[0])
       this.toggleFilter()
   }
 
   render() {
-    const navTabs = this.state.tabs;
+    const navTabs = this.props.tabs;
 
     return (
       <NavBarContainer>
@@ -51,8 +55,8 @@ class index extends React.Component {
           {navTabs.map((tab, tabIndex) => (
             <Tab
               key={`nav-tab-index${tabIndex}`}
-              className={this.state.activeTab === tab ? "active" : ""}
-              onClick={() => this.setState({ activeTab: tab })}
+              className={this.props.selectedCategory === tab ? "active" : ""}
+              onClick={() => this.props.setCategory(tab)}
             >
               {tab}
             </Tab>
@@ -63,7 +67,7 @@ class index extends React.Component {
           <SideActions>
             <Filter onClick={() => this.toggleFilter()}>
               
-              <CurrencyDisplay>{this.state.currency}</CurrencyDisplay>
+              <CurrencyDisplay>{this.props.currency}</CurrencyDisplay>
               <ImgWrapper
                 src="/assets/vectors/caret-arrow.svg"
                 alt="caret-arrow"
@@ -89,5 +93,16 @@ class index extends React.Component {
     );
   }
 }
+const mapStateToProps = (state) => ({
+  currency:state.currency,
+  tabs:state.tabs,
+  selectedCategory:state.selectedCategory
+})
 
-export default index;
+const mapDispatchToProps = (dispatch) => ({
+  toggleCart:() => dispatch(toggleCart()),
+  changeCurrency:(currency) => dispatch(changeCurrency(currency)),
+  setCategory:(option) => dispatch(setCategory(option))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(index);

@@ -1,6 +1,7 @@
 import styled, {css} from "styled-components";
 
 export const NavBarContainer = styled.div`
+    min-height:5rem;
     height:5rem;
     display:flex;
     align-items: center;

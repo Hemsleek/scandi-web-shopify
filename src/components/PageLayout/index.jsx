@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux'
 
 // component styles
 import {Wrapper, Content} from './PageLayoutElements'
@@ -11,22 +12,16 @@ constructor(props) {
     super(props);
 
     this.state = {
-        isCartOpen: false,
     };
-    this.toggleCart = this.toggleCart.bind(this)
 }
-    toggleCart(){
-        this.setState((currentState) => ({
-           isCartOpen: !currentState.isCartOpen
-        }))
-    }
+    
 
     render() {
         return (
-        <Wrapper>
-            <NavBar toggleCart={() => this.toggleCart()} isCartOpen={this.state.isCartOpen} />
+        <Wrapper cartOpen={this.props.isCartOpen}>
+            <NavBar />
             <Content>
-               { this.state.isCartOpen &&  <CartOverlay />}
+               { this.props.isCartOpen &&  <CartOverlay />}
                 {this.props.children}
             </Content>
         </Wrapper>
@@ -34,4 +29,8 @@ constructor(props) {
     }
 }
 
-export default index;
+const mapStateToProps = (state) => ({
+    isCartOpen:state.isCartOpen
+})
+
+export default connect(mapStateToProps,null)(index);

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled,{css} from "styled-components";
 
 
 export const Wrapper = styled.div`
@@ -7,6 +7,10 @@ export const Wrapper = styled.div`
     width: 100%;
     height: 100vh;
     overflow-y: hidden;
+
+    ${props => props.cartOpen && css`
+        height:100%;
+    `}
 `
 
 export const Content = styled.div`
