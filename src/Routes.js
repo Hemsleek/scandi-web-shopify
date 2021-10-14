@@ -10,9 +10,9 @@ export default class Routes extends Component {
     render() {
         return (
             <Switch>
-              <Route to='/cart'   component={Cart} />  
-              <Route to='/product'  component={ProductDescPage} />  
-              <Route to='/' exact component={Home} />  
+              <Route exact to='/product'  component={ProductDescPage} />  
+              <Route exact to='/' component={Home} />  
+              <Route exact to='/cart'   component={Cart} />  
             </Switch>
         )
     }
