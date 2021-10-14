@@ -38,6 +38,14 @@ export const Filter = styled.div`
     align-items: center;
 `
 
+export const CurrencyDisplay = styled.span`
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width:2rem;
+    height:1.81rem;
+`
+
 export const Cart = styled.div`
     display:flex;
     align-items: center;
@@ -50,6 +58,9 @@ export const ImgWrapper = styled.img`
         transform: rotate(180deg);
     `}
 `
+
+
+
 
 export const SideActionsWrapper = styled.div`
     display:flex;
@@ -85,11 +96,11 @@ export const FilterOptions = styled.div`
     display:flex;
     z-index:500;
     flex-direction:column;
-    bottom:-490%;
-    left:0;
+    bottom:-530%;
+    left:-20%;
     background-color: #fff;
     width:100%;
-    padding:1.25rem 0 0 1.25rem;
+    padding:1.25rem 1rem 0 1.25rem;
     font-size:1.125rem;
     font-weight:500;
     color:#1D1F22;
@@ -98,5 +109,6 @@ export const FilterOptions = styled.div`
 
 export const Option = styled.span`
     cursor: pointer;
-    margin-bottom:1.31rem;
+    margin-bottom:1.51rem;
+
 `

@@ -13,6 +13,7 @@ import {
   SideActions,
   SideActionsWrapper,
   Tab,
+  CurrencyDisplay
 } from "./NavBarElements";
 
 class index extends React.Component {
@@ -24,21 +25,21 @@ class index extends React.Component {
       activeTab: "Women",
       filterOptions: "$ USD,€ EUR,¥ JPY".split(","),
       showFilterOptions: false,
+      currency:'$'
       
     };
     this.toggleFilter = this.toggleFilter.bind(this);
+    this.handleCurrencyChange= this.handleCurrencyChange.bind(this);
   }
   toggleFilter() {
-    // if (type === "filter") {
       this.setState((CurrentState) => ({
         showFilterOptions: !CurrentState.showFilterOptions,
       }));
-    // } 
-    // else {
-    //   this.setState((CurrentState) => ({
-    //     isCartOpen: !CurrentState.isCartOpen,
-    //   }));
-    // }
+    
+  }
+  handleCurrencyChange(currency){
+      this.setState({currency:currency[0]})
+      this.toggleFilter()
   }
 
   render() {
@@ -61,7 +62,8 @@ class index extends React.Component {
         <SideActionsWrapper>
           <SideActions>
             <Filter onClick={() => this.toggleFilter()}>
-              <ImgWrapper src="/assets/vectors/dollar.svg" alt="dollar-icon" />
+              
+              <CurrencyDisplay>{this.state.currency}</CurrencyDisplay>
               <ImgWrapper
                 src="/assets/vectors/caret-arrow.svg"
                 alt="caret-arrow"
@@ -76,7 +78,7 @@ class index extends React.Component {
           {this.state.showFilterOptions && (
             <FilterOptions>
               {this.state.filterOptions.map((option, optionIndex) => (
-                <Option key={`filter-option-index${optionIndex}`}>
+                <Option key={`filter-option-index${optionIndex}`} onClick={() => this.handleCurrencyChange(option)}>
                   {option}
                 </Option>
               ))}
