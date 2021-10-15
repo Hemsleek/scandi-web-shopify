@@ -20,14 +20,14 @@ class ProductCard extends Component {
       const item = this.props.productData
       const imgDisplay = item.gallery.length? item.gallery[0]: "/assets/images/cat-image.png"
       const price= getPriceInCurrencySelected(item.prices,selectedCurrency)
-      
+
     return (
-      <ProductWrapper>
-        <PrdImgWrapper>
+      <ProductWrapper outOfStock={!item.inStock}>
+        <PrdImgWrapper outOfStock={!item.inStock}>
 
           <CartImg src="/assets/vectors/green-cart.svg" alt='green-cart' />
           <Image src={imgDisplay}  alt="product-image"/>
-        </PrdImgWrapper>
+        </PrdImgWrapper >
         <PrdContent>
           <Title>{item.name}</Title>
           <Price>{`${price.currency} ${price.amount}`}</Price>
