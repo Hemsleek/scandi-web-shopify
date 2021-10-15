@@ -15,7 +15,7 @@ export const ALL_CATEGORY = gql`
     }
 `
 
-export const CATEGORY_QUERY =(title) => { 
+export const CATEGORY_QUERY = (title) => {
 
     return gql`
             query{
@@ -47,4 +47,36 @@ export const CATEGORY_QUERY =(title) => {
                 }
         }
         `
+}
+
+export const PRODUCT_QUERY = (productId) => {
+
+    return gql`
+        query{
+            product(id:"${productId}"){
+                        id
+                        name
+                        inStock
+                        gallery
+                        description
+                        category
+                        brand
+                        attributes{
+                            id
+                            name
+                            type
+                            items{
+                                id
+                                displayValue
+                                value
+                            }
+                        }
+                        prices{
+                            currency
+                            amount
+                        }
+                        brand
+            }
+        }
+    `
 }

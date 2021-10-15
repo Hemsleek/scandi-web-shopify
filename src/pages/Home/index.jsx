@@ -17,18 +17,31 @@ import { ProductWrapper, Title } from "./HomeElements";
     };
   }
 
+  async componentDidMount(){
+    try {
+      if(this.props.selectedCategory){
+        const {data} = await fetchData(CATEGORY_QUERY(this.props.selectedCategory))
+        this.setState({category:data.category})
+      }
+    } catch (error) {
+      console.log(error)
+    }
+    
+  }
+
   async shouldComponentUpdate(nextProps){
     try {
       if(nextProps.selectedCategory!== this.props.selectedCategory){
-        console.log({current:nextProps.selectedCategory})
           const {data} = await fetchData(CATEGORY_QUERY(nextProps.selectedCategory))
           this.setState({category:data.category})
       }
       
     } catch (error) {
-      
+      console.log(error)
     }
   }
+
+  
 
   render() {
     const productsToShow = this.state.category.products || []
@@ -39,7 +52,7 @@ import { ProductWrapper, Title } from "./HomeElements";
         <ProductWrapper>
           {productsToShow
             .map((product, productIndex) => (
-              <ProductCard key={`category-product-index${productIndex}`} productData={product} />
+              <ProductCard key={`category-product-index${productIndex}`} productData={product} history={this.props.history} />
             ))}
         </ProductWrapper>
       </Fragment>

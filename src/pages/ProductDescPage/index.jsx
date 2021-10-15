@@ -1,51 +1,118 @@
 import React from "react";
-import { MainContainer, PDBigImage, PDButton, PDDesc, PDDetails, PDInfo, PDLabel, PDName, PDPrice, PDPriceLabel, PDPriceValue, PDSize, PDSizes, PDSizesWrapper, PDSmallImage, PDWrapper, SmallSizes } from "./ProductDescPage";
+import { connect } from "react-redux";
+import parse from 'html-react-parser'
+import { fetchData } from "../../Apollo";
+import { PRODUCT_QUERY } from "../../Apollo/queries";
+import { addToCart } from "../../store/actions";
+import { getPriceInCurrencySelected } from "../../utils";
+import {
+  MainContainer,
+  PDBigImage,
+  PDButton,
+  PDDesc,
+  PDDetails,
+  PDInfo,
+  PDLabel,
+  PDName,
+  PDPrice,
+  PDPriceLabel,
+  PDPriceValue,
+  PDSize,
+  PDSizes,
+  PDSizesWrapper,
+  PDSmallImage,
+  PDWrapper,
+  SmallSizes,
+} from "./ProductDescPage";
 
 class index extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      product: {},
+    };
+  }
+
+  async componentDidMount() {
+    try {
+      const productId = this.props.match.params.id;
+      const { data } = await fetchData(PRODUCT_QUERY(productId));
+
+      this.setState({ product: data.product });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   render() {
+    const productData = this.state.product;
+    console.log({ productData });
+    const nameArr = String(productData.name).split(" ");
+    const productName = nameArr.length > 3 ? nameArr[0] : nameArr.join(" ");
+    const productShortDesc =
+      nameArr.length > 3 ? nameArr.slice(1).join(" ") : "";
+    let price = {};
+  
+  
+    if (productData.prices) {
+      price = getPriceInCurrencySelected(
+        productData.prices,
+        this.props.currency
+      );
+    }
+    let smallImages= []
+    let largeImage = ''
+    if(productData.gallery){
+      
+      smallImages = productData.gallery.length >3 ? productData.gallery.slice(0,3) : productData.gallery
+      largeImage = productData.gallery[0]
+    }
+
+    console.log({ productData });
     const sizes = "XS,S,M,L".split(",");
 
     return (
       <PDWrapper>
         <SmallSizes>
-          {Array(3)
-            .fill(" ")
-            .map((item, itemIndex) => (
+          {smallImages
+            .map((img, imgIndex) => (
               <PDSmallImage
-                src="/assets/images/small-pd-img.png"
-                key={`Product-Desc-index${itemIndex}`}
+                src={img}
+                key={`Product-Desc-index${imgIndex}`}
                 alt="small-image"
               />
             ))}
         </SmallSizes>
         <MainContainer>
-          <PDBigImage src='/assets/images/PD-img.png' alt="big-item-image" />
+          <PDBigImage src={largeImage} alt="big-item-image" />
           <PDDetails>
-            <PDName>Apollo</PDName>
-            <PDDesc>Running Short</PDDesc>
+            <PDName>{productName}</PDName>
+            <PDDesc>{productShortDesc}</PDDesc>
             <PDSizes>
               <PDLabel>SIZE:</PDLabel>
               <PDSizesWrapper>
                 {sizes.map((size, sizeIndex) => (
-                  <PDSize key={`product-description-size${sizeIndex}`} active={size==='S'} disabled={size=== 'XS'}>{size}</PDSize>
+                  <PDSize
+                    key={`product-description-size${sizeIndex}`}
+                    active={size === "S"}
+                    disabled={size === "XS"}
+                  >
+                    {size}
+                  </PDSize>
                 ))}
               </PDSizesWrapper>
             </PDSizes>
             <PDPrice>
               <PDPriceLabel>PRICE:</PDPriceLabel>
-              <PDPriceValue>$50.00</PDPriceValue>
+              <PDPriceValue>{productData.prices && `${price.currency} ${price.amount}`}</PDPriceValue>
             </PDPrice>
-            <PDButton>ADD TO CART</PDButton>
+            <PDButton onClick={() => this.props.addToCart(productData)}>
+              ADD TO CART
+            </PDButton>
             <PDInfo>
-              Find stunning women's cocktail dresses and party dresses. Stand
-              out in lace and metallic cocktail dresses and party dresses from
-              all your favorite brands.
+              
+              {productData.description ? parse(productData.description) : ""}
             </PDInfo>
           </PDDetails>
         </MainContainer>
@@ -53,5 +120,12 @@ class index extends React.Component {
     );
   }
 }
+const mapStateToProps = (state) => ({
+  currency: state.selectedCurrency,
+});
 
-export default index;
+const mapDispatchToProps = (dispatch) => ({
+  addToCart: (product) => dispatch(addToCart(product)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(index);

@@ -4,6 +4,7 @@ import { BoldText, CartItemWrapper, CartOverlayWrapper, MiniCart, SmallText,Acti
 
 //Components
 import CartItem from '../CartItem'
+import { connect } from 'react-redux';
 
 class index extends React.Component {
 constructor(props) {
@@ -23,7 +24,7 @@ constructor(props) {
                         </Title>
                         <CartItemWrapper>
                             {
-                                Array(2).fill(' ')
+                                this.props.cart
                                 .map((item, itemIndex) => (
                                     <CartItem key={`cart-item${itemIndex}`} />
                                 ))
@@ -44,5 +45,13 @@ constructor(props) {
     }
 }
 
+const mapStateToProps = (state) => ({
+      cart:state.cart
+    });
+    
+    // const mapDispatchToProps = (dispatch) => ({
+    //   mutateQuantity: (mutationType, productId) =>
+    //     dispatch(mutateProductQantity(mutationType, productId)),
+    // });
 
-export default index;
+export default connect(mapStateToProps,null)(index);

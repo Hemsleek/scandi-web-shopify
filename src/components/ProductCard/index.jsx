@@ -16,6 +16,23 @@ import { addToCart } from "../../store/actions";
 
 class ProductCard extends Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      category:{}
+    };
+    this.handleProductDetails = this.handleProductDetails.bind(this)
+  }
+
+
+  handleProductDetails(){
+    const {inStock , id} = this.props.productData
+    if(!inStock) return null
+    const {history} = this.props
+    history.push(`/product/${id}`)
+  }
+
   render() {
       const selectedCurrency = this.props.currency
       const item = this.props.productData
@@ -23,10 +40,10 @@ class ProductCard extends Component {
       const price= getPriceInCurrencySelected(item.prices,selectedCurrency)
 
     return (
-      <ProductWrapper outOfStock={!item.inStock}>
+      <ProductWrapper outOfStock={!item.inStock} onClick={this.handleProductDetails}>
         <PrdImgWrapper outOfStock={!item.inStock}>
 
-          <CartImg src="/assets/vectors/green-cart.svg" alt='green-cart' onClick={() =>{this.props.addToCart(this.props.item)}} />
+          <CartImg src="/assets/vectors/green-cart.svg" alt='green-cart' onClick={() =>{this.props.addToCart(this.props.productData)}} />
           <Image src={imgDisplay}  alt="product-image"/>
         </PrdImgWrapper >
         <PrdContent>

@@ -13,14 +13,21 @@ export const SmallSizes = styled.div`
 `
 export const PDSmallImage = styled.img`
     margin-bottom:2.5rem;
+    width:4.937rem;
+    height:5rem;
+    object-fit:contain;
 
 `
 export const MainContainer = styled.div`
     display:flex;
+    
     column-gap:6.25rem; 
 `
 export const PDBigImage = styled.img`
-
+    width:38.12rem;
+    height:28.93rem;
+    object-fit:contain;
+    object-position:top;
 `
 
 export const PDDetails = styled.div`

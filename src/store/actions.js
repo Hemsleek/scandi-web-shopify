@@ -1,4 +1,4 @@
-import { CARTMINI, CATEGORY, CURRENCY,ALLCURRENCY, ALLCATEGORY, ADDTOCART } from "./types";
+import { CARTMINI, CATEGORY, CURRENCY,ALLCURRENCY, ALLCATEGORY, ADDTOCART, MUTATEQUANTITY } from "./types";
 
 
 export const toggleCart = () => ({
@@ -37,6 +37,14 @@ export const addToCart = (product) => ({
     type:ADDTOCART,
     payload:{
         product
+    }
+})
+
+export const mutateProductQantity = (mutationType,productId) => ({
+    type:MUTATEQUANTITY,
+    payload:{
+        mutationType,
+        productId
     }
 })
 

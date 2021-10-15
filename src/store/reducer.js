@@ -1,4 +1,4 @@
-import {CARTMINI, CURRENCY, CATEGORY, ALLCURRENCY, ALLCATEGORY, ADDTOCART} from './types'
+import {CARTMINI, CURRENCY, CATEGORY, ALLCURRENCY, ALLCATEGORY, ADDTOCART, MUTATEQUANTITY} from './types'
 
 const defaultState = {
     isCartOpen:false,
@@ -35,8 +35,38 @@ const reducer = (state = defaultState,action) => {
                 break;
 
                 case ADDTOCART:
-                    result = {...state,cart:state.cart.concat(action.payload.product)}
+                    let updatedCart=[]
+                    const isProductInCart = state.cart.find(item => item.id===action.payload.product.id)
+                    if(isProductInCart) {
+                        updatedCart = state.cart.map(item => {
+                            if(item.id === isProductInCart.id) item.quantity+=1
+                            return item
+                        })
+                    }  
+                    else{
+                        updatedCart = state.cart.concat({...action.payload.product,quantity:1})
+                    }
+
+                    result = {...state,cart:updatedCart}
                     break;
+
+                case MUTATEQUANTITY:
+                    let cartUpdate=[]
+                    if(action.payload.mutationType==='add'){
+                        cartUpdate= state.cart.map(item => {
+                            if(item.id === action.payload.productId) item.quantity+=1
+                            return item
+                        })
+                    }
+                    else{
+                        cartUpdate= state.cart.map(item => {
+                            if(item.id === action.payload.productId) item.quantity-=1
+                            return item
+                        })
+                    }
+                    result={...state,cart:cartUpdate}
+                    break;
+
 
             default:
                 result=state
