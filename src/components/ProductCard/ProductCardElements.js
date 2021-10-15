@@ -25,6 +25,8 @@ export const ProductWrapper = styled.div`
 export const PrdImgWrapper = styled.div`
     position: relative;
     width:100%;
+    height:20.62rem;
+
 
     ${props => props.outOfStock && css`
     &::after{
@@ -45,11 +47,11 @@ export const PrdImgWrapper = styled.div`
 `
 
 export const Image = styled.img`
-    -o-object-fit: cover;
+    -o-object-fit: contain;
     object-position: top;
-    object-fit: cover;
-    width:22.12rem;
-    height:20.62rem;
+    object-fit: contain;
+    width:100%;
+    height:100%;
 
 `
 
@@ -59,6 +61,7 @@ export const CartImg = styled.img`
     z-index:100;
     bottom:-1.62rem;
     right:1.625rem;
+    cursor: pointer;
 
 `
 

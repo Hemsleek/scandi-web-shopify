@@ -70,6 +70,7 @@ class index extends React.Component {
 
   render() {
     const navTabs = this.props.tabs;
+    const showBadges = this.props.cart.length >0 
 
     return (
       <NavBarContainer>
@@ -97,7 +98,7 @@ class index extends React.Component {
               />
             </Filter>
             <Cart onClick={() => this.props.toggleCart()}>
-              <Badges>2</Badges>
+              {showBadges && <Badges>{this.props.cart.length}</Badges>}
               <ImgWrapper src="/assets/vectors/cart.svg" alt="cart-icon" />
             </Cart>
           </SideActions>
@@ -119,7 +120,8 @@ const mapStateToProps = (state) => ({
   currency:state.selectedCurrency,
   tabs:state.categories,
   selectedCategory:state.selectedCategory,
-  currencies:state.currencies
+  currencies:state.currencies,
+  cart:state.cart
 })
 
 const mapDispatchToProps = (dispatch) => ({

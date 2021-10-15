@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux'
 
 // component styles
-import {Wrapper, Content} from './PageLayoutElements'
+import {Wrapper, Content, Main} from './PageLayoutElements'
 
 //Component
 import NavBar from '../NavBar'
@@ -18,12 +18,14 @@ constructor(props) {
 
     render() {
         return (
-        <Wrapper cartOpen={this.props.isCartOpen}>
+        <Wrapper >
             <NavBar />
+            <Main >
+            { this.props.isCartOpen &&  <CartOverlay />}
             <Content>
-               { this.props.isCartOpen &&  <CartOverlay />}
                 {this.props.children}
             </Content>
+            </Main>
         </Wrapper>
         )
     }

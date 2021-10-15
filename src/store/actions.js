@@ -1,4 +1,4 @@
-import { CARTMINI, CATEGORY, CURRENCY,ALLCURRENCY, ALLCATEGORY } from "./types";
+import { CARTMINI, CATEGORY, CURRENCY,ALLCURRENCY, ALLCATEGORY, ADDTOCART } from "./types";
 
 
 export const toggleCart = () => ({
@@ -30,6 +30,13 @@ export const setCurrencies = (currencies) => ({
     type:ALLCURRENCY,
     payload:{
         currencies
+    }
+})
+
+export const addToCart = (product) => ({
+    type:ADDTOCART,
+    payload:{
+        product
     }
 })
 

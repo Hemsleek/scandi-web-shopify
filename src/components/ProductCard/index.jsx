@@ -12,6 +12,7 @@ import {
 } from "./ProductCardElements";
 
 import {getPriceInCurrencySelected} from '../../utils'
+import { addToCart } from "../../store/actions";
 
 class ProductCard extends Component {
 
@@ -25,7 +26,7 @@ class ProductCard extends Component {
       <ProductWrapper outOfStock={!item.inStock}>
         <PrdImgWrapper outOfStock={!item.inStock}>
 
-          <CartImg src="/assets/vectors/green-cart.svg" alt='green-cart' />
+          <CartImg src="/assets/vectors/green-cart.svg" alt='green-cart' onClick={() =>{this.props.addToCart(this.props.item)}} />
           <Image src={imgDisplay}  alt="product-image"/>
         </PrdImgWrapper >
         <PrdContent>
@@ -42,4 +43,8 @@ const mapStateToProps = (state) => ({
   
 })
 
-export default connect(mapStateToProps, null)(ProductCard)
+const mapDispatchToProps = (dispatch) => ({
+  addToCart:(product) => dispatch(addToCart(product))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductCard)

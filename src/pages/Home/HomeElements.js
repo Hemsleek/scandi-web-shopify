@@ -13,5 +13,5 @@ export const ProductWrapper = styled.div`
     grid-template-columns: repeat(3, 24.125rem);
     grid-column-gap: 2.5rem;
     grid-row-gap: 6.44rem;
-    padding-bottom:1rem;
+    padding-bottom:12rem;
 `

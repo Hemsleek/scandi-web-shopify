@@ -1,22 +1,31 @@
-import styled,{css} from "styled-components";
+import styled from "styled-components";
 
 
 export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100vh;
-    overflow-y: hidden;
+    
 
-    ${props => props.cartOpen && css`
-        height:100%;
-    `}
+    
+
+`
+export const Main = styled.div`
+    position:relative;
+    flex-grow:1;
+    
+
+    
+    
 `
 
 export const Content = styled.div`
     position:relative;
     flex-grow: 1;
-    padding:5rem 6.31rem 0 7.31rem;
+    height:100vh;
+    padding:5rem 6.31rem 0rem 7.31rem;
     overflow-y:auto;
+
+
     
 `

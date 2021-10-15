@@ -2,10 +2,9 @@ import styled from 'styled-components'
 
 export const CartOverlayWrapper = styled.div`
     width:100%;
-    height:100%;
+    height:100vh;
     background: rgba(57, 55, 72, 0.22);
     z-index:100;
-    overflow-y:hidden;
     position:absolute;
     top:0;
     left:0;

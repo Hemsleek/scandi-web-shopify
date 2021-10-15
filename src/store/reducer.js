@@ -1,4 +1,4 @@
-import {CARTMINI, CURRENCY, CATEGORY, ALLCURRENCY, ALLCATEGORY} from './types'
+import {CARTMINI, CURRENCY, CATEGORY, ALLCURRENCY, ALLCATEGORY, ADDTOCART} from './types'
 
 const defaultState = {
     isCartOpen:false,
@@ -6,6 +6,7 @@ const defaultState = {
     categories:[], 
     selectedCurrency:'',
     selectedCategory:'',
+    cart:[]
 }
 
 const reducer = (state = defaultState,action) => {
@@ -33,6 +34,9 @@ const reducer = (state = defaultState,action) => {
                 result = {...state,categories:action.payload.categories}
                 break;
 
+                case ADDTOCART:
+                    result = {...state,cart:state.cart.concat(action.payload.product)}
+                    break;
 
             default:
                 result=state
