@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const Title = styled.span`
     font-weight:400;
     font-size:2.625rem;
+    text-transform: capitalize;
     
 `
 

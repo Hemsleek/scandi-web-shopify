@@ -46,7 +46,10 @@ export const PrdImgWrapper = styled.div`
 
 export const Image = styled.img`
     -o-object-fit: cover;
+    object-position: top;
     object-fit: cover;
+    width:22.12rem;
+    height:20.62rem;
 
 `
 

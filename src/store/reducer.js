@@ -1,10 +1,11 @@
-import {CARTMINI, CURRENCY, CATEGORY} from './types'
+import {CARTMINI, CURRENCY, CATEGORY, ALLCURRENCY, ALLCATEGORY} from './types'
 
 const defaultState = {
     isCartOpen:false,
-    currency:'$',
-    tabs: "Women,Men,Kids".split(","),
-    selectedCategory:'Women'
+    currencies:[],
+    categories:[], 
+    selectedCurrency:'',
+    selectedCategory:'',
 }
 
 const reducer = (state = defaultState,action) => {
@@ -17,13 +18,22 @@ const reducer = (state = defaultState,action) => {
                 break;
             
             case CURRENCY:
-                result={...state,currency:action.payload.currency}
+                result={...state,selectedCurrency:action.payload.currency}
                 break;
 
             case CATEGORY:
                 result={...state, selectedCategory:action.payload.tab}
                 break;
-                
+
+            case ALLCURRENCY:
+                result = {...state,currencies:action.payload.currencies}
+                break;
+
+            case ALLCATEGORY:
+                result = {...state,categories:action.payload.categories}
+                break;
+
+
             default:
                 result=state
                 break;

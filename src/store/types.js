@@ -1,3 +1,5 @@
 export const CARTMINI='cartMini'
 export const CURRENCY='currency'
 export const CATEGORY='category'
+export const ALLCATEGORY='allCategory'
+export const ALLCURRENCY = 'allCurrencies'

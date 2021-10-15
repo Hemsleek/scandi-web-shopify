@@ -27,6 +27,7 @@ export const Tab = styled.span`
     align-items:center;
     border-bottom:2px solid transparent;
     cursor:pointer;
+    text-transform:capitalize;
 
     &.active{
         color:#5ECE7B;
@@ -98,7 +99,7 @@ export const FilterOptions = styled.div`
     display:flex;
     z-index:500;
     flex-direction:column;
-    bottom:-530%;
+    bottom:-850%;
     left:-20%;
     background-color: #fff;
     width:100%;
