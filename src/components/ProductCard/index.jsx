@@ -26,7 +26,9 @@ class ProductCard extends Component {
   }
 
 
-  handleProductDetails(){
+  handleProductDetails(e){
+    if(e.target.alt === 'green-cart') return null
+
     const {inStock , id} = this.props.productData
     if(!inStock) return null
     const {history} = this.props
@@ -40,7 +42,7 @@ class ProductCard extends Component {
       const price= getPriceInCurrencySelected(item.prices,selectedCurrency)
 
     return (
-      <ProductWrapper outOfStock={!item.inStock} onClick={this.handleProductDetails}>
+      <ProductWrapper outOfStock={!item.inStock} onClick={(e) => this.handleProductDetails(e)}>
         <PrdImgWrapper outOfStock={!item.inStock}>
 
           <CartImg src="/assets/vectors/green-cart.svg" alt='green-cart' onClick={() =>{this.props.addToCart(this.props.productData)}} />

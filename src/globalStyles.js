@@ -17,6 +17,12 @@ const GlobalStyles= createGlobalStyle`
         overflow: hidden;
     }
     
+    /* scroll bar */
+    *::-webkit-scrollbar {
+        width:0.25rem;
+        height:0.25rem;
+    }
+   
 
 `
 

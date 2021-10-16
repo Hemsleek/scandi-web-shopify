@@ -47,12 +47,15 @@ export const CurrencyDisplay = styled.span`
     justify-content: center;
     width:2rem;
     height:1.81rem;
+    margin-right:0.5rem;
+
 `
 
 export const Cart = styled.div`
     display:flex;
     align-items: center;
     position:relative;
+    user-select:none;
 `
 
 export const ImgWrapper = styled.img`
@@ -115,3 +118,4 @@ export const Option = styled.span`
     margin-bottom:1.51rem;
 
 `
+

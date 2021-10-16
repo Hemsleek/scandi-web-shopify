@@ -95,6 +95,7 @@ export const ItemQuantityWrapper = styled.div`
 `
 export const AddButton = styled(Size)`
     font-size:1.5rem;
+    user-select:none;
 
     ${props => props.large && css`
         height:2.81rem;
@@ -108,6 +109,7 @@ export const ItemQuantity = styled.span`
 `
 export const MinusButton = styled(Size)`
     font-size:1.5rem;
+    user-select:none;
 
     ${props => props.large && css`
         width:2.81rem;
@@ -117,7 +119,9 @@ export const MinusButton = styled(Size)`
 `
 export const ItemDisplay = styled.div`
     position:relative;
-
+    width:8.81rem;
+    height:11.56rem;
+    
     &:hover{
         img[alt='chevron-arrow']{
             display:inline;
@@ -125,8 +129,10 @@ export const ItemDisplay = styled.div`
     }
 `
 export const ItemImage = styled.img`
-    --o-object-fit:cover;
-    object-fit:cover;
+    --o-object-fit:contain;
+    object-fit:contain;
+    width:100%;
+    height:100%;
 `
 export const ChevronArrow = styled.img`
             position:absolute;
@@ -142,3 +148,5 @@ export const ChevronArrowLeft = styled(ChevronArrow)`
     transform:rotate(180deg);
     transition:0.2s all ease-in-out;
 `
+
+

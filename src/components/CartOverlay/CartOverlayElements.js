@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 export const CartOverlayWrapper = styled.div`
@@ -76,5 +77,14 @@ export const CheckOut = styled.button`
     color:#fff;
     outline: none;
     background-color: #5ECE7B;
+
+`
+
+export const LinkToCart = styled(Link)`
+    display:flex;
+    flex-grow:1;
+    text-decoration:none;
+    color: #1D1F22;
+
 
 `

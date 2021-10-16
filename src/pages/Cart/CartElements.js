@@ -11,4 +11,6 @@ export const CWrapper = styled.div`
     display:flex;
     flex-direction: column;
     width:68.62rem;
+    padding-bottom:12rem;
+
 `

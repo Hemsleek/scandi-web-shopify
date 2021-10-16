@@ -27,12 +27,15 @@ export const PDBigImage = styled.img`
     width:38.12rem;
     height:28.93rem;
     object-fit:contain;
-    object-position:top;
+    object-position:center;
 `
 
 export const PDDetails = styled.div`
     display:flex;
     flex-direction: column;
+    max-height:28.93rem;
+    overflow:auto;
+    padding-right:1rem;
 
 `
 export const PDName = styled.span`

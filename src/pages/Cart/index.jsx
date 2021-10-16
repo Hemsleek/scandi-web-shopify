@@ -3,6 +3,8 @@ import { CartTitle, CWrapper } from './CartElements';
 
 // Component
 import CartItem from '../../components/CartItem'
+import { mutateProductQantity } from '../../store/actions';
+import { connect } from 'react-redux';
 
 class index extends React.Component {
 constructor(props) {
@@ -18,9 +20,9 @@ constructor(props) {
             <CartTitle>CART</CartTitle>
             <CWrapper>
                 {
-                    Array(2).fill(' ')
+                    this.props.cart
                     .map((item, itemIndex) => (
-                        <CartItem key={`cart-page-item${itemIndex}`} large />
+                        <CartItem key={`cart-page-item${itemIndex}`} cartItemId={item.id} large />
                     ))
                 }
             </CWrapper>
@@ -29,4 +31,13 @@ constructor(props) {
     }
 }
 
-export default index;
+const mapStateToProps = (state) => ({
+    cart:state.cart
+  })
+  
+   const mapDispatchToProps = (dispatch) => ({
+      mutateQuantity: (mutationType, productId) =>
+        dispatch(mutateProductQantity(mutationType, productId)),
+    });
+
+export default  connect(mapStateToProps,mapDispatchToProps)(index);

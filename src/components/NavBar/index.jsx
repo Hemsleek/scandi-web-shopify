@@ -19,6 +19,7 @@ import {
   CurrencyDisplay
 } from "./NavBarElements";
 import { ALL_CURRENCY,ALL_CATEGORY } from "../../Apollo/queries";
+import { Link } from "react-router-dom";
 
 class index extends React.Component {
   constructor(props) {
@@ -42,7 +43,7 @@ class index extends React.Component {
         if(allCurrencyData.status === 'fulfilled'){
           const {currencies} = allCurrencyData.value.data
           this.props.setCurrencies(currencies)
-          this.props.changeCurrency(currencies[0][0])
+          this.props.changeCurrency(currencies[0])
 
         }
         if(allCategoryData.status === 'fulfilled'){
@@ -64,7 +65,7 @@ class index extends React.Component {
   }
 
   handleCurrencyChange(currency){
-      this.props.changeCurrency(currency[0])
+      this.props.changeCurrency(currency)
       this.toggleFilter()
   }
 
@@ -85,7 +86,9 @@ class index extends React.Component {
             </Tab>
           ))}
         </NavTabs>
-        <ImgWrapper src="/assets/vectors/brand-icon.svg" alt="brand-icon" />
+        <Link to="/">
+          <ImgWrapper src="/assets/vectors/brand-icon.svg" alt="brand-icon" />
+        </Link>
         <SideActionsWrapper>
           <SideActions>
             <Filter onClick={() => this.toggleFilter()}>
