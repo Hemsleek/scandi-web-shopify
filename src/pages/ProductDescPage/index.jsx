@@ -4,7 +4,7 @@ import parse from 'html-react-parser'
 import { fetchData } from "../../Apollo";
 import { PRODUCT_QUERY } from "../../Apollo/queries";
 import { addToCart } from "../../store/actions";
-import { getPriceInCurrencySelected } from "../../utils";
+import { getPriceInCurrencySelected, setAtrributesDefault } from "../../utils";
 import {
   MainContainer,
   PDBigImage,
@@ -31,7 +31,31 @@ class index extends React.Component {
 
     this.state = {
       product: {},
+      selectedOptions:{
+
+      }
     };
+    this.handleOptionSet = this.handleOptionSet.bind(this)
+    this.addItemToCart = this.addItemToCart.bind(this)
+  }
+
+  handleOptionSet(name,item){
+    this.setState(currentState => ({
+      selectedOptions:{
+        ...currentState.selectedOptions,
+        [name]:item
+      }
+    }))
+
+  }
+
+  addItemToCart(){
+    const productToAdd = {
+      ...this.state.product,
+      selectedOptions:this.state.selectedOptions
+    }
+    console.log({productToAdd})
+    this.props.addToCart(productToAdd)
   }
 
   async componentDidMount() {
@@ -39,7 +63,7 @@ class index extends React.Component {
       const productId = this.props.match.params.id;
       const { data } = await fetchData(PRODUCT_QUERY(productId));
 
-      this.setState({ product: data.product });
+      this.setState({ product: data.product,selectedOptions:setAtrributesDefault(data.product) });
     } catch (error) {
       console.log(error);
     }
@@ -47,6 +71,9 @@ class index extends React.Component {
 
   render() {
     const productData = this.state.product;
+
+    console.log({options:this.state.selectedOptions})
+
     console.log({ productData });
     const nameArr = String(productData.name).split(" ");
     const productName = nameArr.length > 3 ? nameArr[0] : nameArr.join(" ");
@@ -69,8 +96,7 @@ class index extends React.Component {
       largeImage = productData.gallery[0]
     }
 
-    console.log({ productData });
-    const sizes = "XS,S,M,L".split(",");
+    console.log({ productData,productName });
 
     return (
       <PDWrapper>
@@ -87,27 +113,37 @@ class index extends React.Component {
         <MainContainer>
           <PDBigImage src={largeImage} alt="big-item-image" />
           <PDDetails>
-            <PDName>{productName}</PDName>
-            <PDDesc>{productShortDesc}</PDDesc>
-            <PDSizes>
-              <PDLabel>SIZE:</PDLabel>
+            <PDName>{productName!=='undefined' && productName}</PDName>
+            <PDDesc>{productShortDesc || ''}</PDDesc>
+            { productData.attributes &&
+              productData.attributes.map((attribute) => (
+            <PDSizes key={`product-attribute-${attribute.id}`}>
+              <PDLabel>{attribute.name}:</PDLabel>
               <PDSizesWrapper>
-                {sizes.map((size, sizeIndex) => (
+                {attribute.items.map((item) => (
                   <PDSize
-                    key={`product-description-size${sizeIndex}`}
-                    active={size === "S"}
-                    disabled={size === "XS"}
+                    key={`product-description-size${item.id}`}
+                    onClick={() => this.handleOptionSet(attribute.name,item) }
+                    style={attribute.type==='swatch'? {backgroundColor: item.value}: {}}
+                    
+                    swatchActive = {attribute.type==='swatch' && attribute.name==='Color' && item.displayValue === this.state.selectedOptions[attribute.name].displayValue}
+
+                    active={item.displayValue === this.state.selectedOptions[attribute.name].displayValue}
+                    disabled={item.displayValue === "XS"}
                   >
-                    {size}
+                    {attribute.type!=='swatch' && item.displayValue}
                   </PDSize>
                 ))}
               </PDSizesWrapper>
             </PDSizes>
+
+              ))
+            }
             <PDPrice>
               <PDPriceLabel>PRICE:</PDPriceLabel>
               <PDPriceValue>{productData.prices && `${price.currency} ${price.amount}`}</PDPriceValue>
             </PDPrice>
-            <PDButton onClick={() => this.props.addToCart(productData)}>
+            <PDButton onClick={this.addItemToCart}>
               ADD TO CART
             </PDButton>
             <PDInfo>

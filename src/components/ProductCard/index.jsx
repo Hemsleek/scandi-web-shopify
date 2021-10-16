@@ -11,7 +11,7 @@ import {
   Price
 } from "./ProductCardElements";
 
-import {getPriceInCurrencySelected} from '../../utils'
+import {getPriceInCurrencySelected, setAtrributesDefault} from '../../utils'
 import { addToCart } from "../../store/actions";
 
 class ProductCard extends Component {
@@ -23,8 +23,17 @@ class ProductCard extends Component {
       category:{}
     };
     this.handleProductDetails = this.handleProductDetails.bind(this)
+    this.addItemToCart = this.addItemToCart.bind(this)
   }
 
+  addItemToCart(){
+    const productToAdd = {
+      ...this.props.productData,
+      selectedOptions:setAtrributesDefault(this.props.productData)
+    }
+  
+    this.props.addToCart(productToAdd)
+  }
 
   handleProductDetails(e){
     if(e.target.alt === 'green-cart') return null
@@ -45,7 +54,7 @@ class ProductCard extends Component {
       <ProductWrapper outOfStock={!item.inStock} onClick={(e) => this.handleProductDetails(e)}>
         <PrdImgWrapper outOfStock={!item.inStock}>
 
-          <CartImg src="/assets/vectors/green-cart.svg" alt='green-cart' onClick={() =>{this.props.addToCart(this.props.productData)}} />
+          <CartImg src="/assets/vectors/green-cart.svg" alt='green-cart' onClick={this.addItemToCart} />
           <Image src={imgDisplay}  alt="product-image"/>
         </PrdImgWrapper >
         <PrdContent>

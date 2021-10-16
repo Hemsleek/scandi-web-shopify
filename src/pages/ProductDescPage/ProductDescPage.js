@@ -63,14 +63,24 @@ export const PDSizesWrapper = styled.div`
 export const PDSize = styled.div`
     width: 3.93rem;
     height:2.81rem;
+    text-align:center;
     display:flex;
     align-items:center;
     justify-content:center;
     border: 1px solid #1D1F22;
+    user-select:none;
+
+
 
     ${props => props.active && css`
-        background:#1D1F22;
+        background-color:#1D1F22;
         color:#fff;
+
+    `}
+
+    ${props => props.swatchActive && css`
+        border: 3px solid green;
+        
 
     `}
 

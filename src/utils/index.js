@@ -6,3 +6,15 @@ export const getPriceInCurrencySelected = (prices, selectedCurrency) =>{
     return price
 
 } 
+
+export const setAtrributesDefault=(product) => {
+    const selectedOptions = {}
+    const {attributes} = product
+
+    attributes.forEach( attribute => {
+        selectedOptions[attribute.name] = attribute.items.length>0 ? attribute.items[0] : null
+    })
+
+
+    return selectedOptions
+}
