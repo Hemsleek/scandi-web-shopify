@@ -1,7 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
-import { mutateProductQantity } from "../../store/actions";
+import {
+  changeCartSelectedOption,
+  mutateProductQantity,
+} from "../../store/actions";
 import { getPriceInCurrencySelected } from "../../utils";
+import {
+  renderAttributeValue,
+  checkSwatchType,
+  itemsRender,
+} from "../../utils/helpers";
 import {
   AddButton,
   CardDetails,
@@ -17,7 +25,6 @@ import {
   MinusButton,
   Size,
   Sizes,
-  SizeM,
   ChevronArrow,
   ChevronArrowLeft,
 } from "./CartItemElements";
@@ -27,49 +34,50 @@ class index extends React.Component {
     super(props);
 
     this.state = {
-        setImage:''
+      setImage: "",
     };
+
     this.handleQuantityChange = this.handleQuantityChange.bind(this);
     this.handleImageChange = this.handleImageChange.bind(this);
+    this.handleOptionSet = this.handleOptionSet.bind(this);
   }
 
+  handleOptionSet(productId, name, item) {
+    this.props.changeCartSelectedOption(productId, name, item);
+  }
 
-
-  handleQuantityChange(mutationType,id,quantity) {
+  handleQuantityChange(mutationType, id, quantity) {
     if (mutationType === "remove" && quantity === 1) return null;
-    this.props.mutateQuantity(mutationType,id)
+    this.props.mutateQuantity(mutationType, id);
   }
 
-  handleImageChange(gallery, type){
-      const indexOfUrl = gallery.indexOf(this.state.setImage)
-        if(type==='next' && indexOfUrl !== gallery.length - 1){
-            this.setState({setImage:gallery[indexOfUrl+1]})
-            return null
-        }
-        if(type==='previous' && indexOfUrl !== 0){
-            this.setState({setImage:gallery[indexOfUrl-1]})
-            return null
-
-        }
-
+  handleImageChange(gallery, type) {
+    const indexOfUrl = gallery.indexOf(this.state.setImage);
+    if (type === "next" && indexOfUrl !== gallery.length - 1) {
+      this.setState({ setImage: gallery[indexOfUrl + 1] });
+      return null;
+    }
+    if (type === "previous" && indexOfUrl !== 0) {
+      this.setState({ setImage: gallery[indexOfUrl - 1] });
+      return null;
+    }
   }
 
-  componentDidMount(){
-    const item = (this.props.cart).find(i => i.id===this.props.cartItemId);
-    this.setState({setImage:item.gallery[0]})
-
+  componentDidMount() {
+    const item = this.props.cart.find((i) => i.id === this.props.cartItemId);
+    this.setState({ setImage: item.gallery[0] });
   }
 
   render() {
-    const item = (this.props.cart).find(i => i.id===this.props.cartItemId);
-    console.log({item})
+    const item = this.props.cart.find((i) => i.id === this.props.cartItemId);
+    console.log({ item });
+    console.log({ items: item.attributes[0].items });
     const nameArr = String(item.name).split(" ");
     const productName = nameArr.length > 3 ? nameArr[0] : nameArr.join(" ");
     const productShortDesc =
       nameArr.length > 3 ? nameArr.slice(1).join(" ") : "";
 
     const price = getPriceInCurrencySelected(item.prices, this.props.currency);
-
 
     return (
       <CartItemContainer large={this.props.large}>
@@ -79,36 +87,71 @@ class index extends React.Component {
           <ItemPrice
             large={this.props.large}
           >{`${price.currency} ${price.amount}`}</ItemPrice>
-          <Sizes large={this.props.large}>
-            <Size large={this.props.large}>S</Size>
-            <Size large={this.props.large}>XS</Size>
-            <Size large={this.props.large}>S</Size>
-            <SizeM large={this.props.large}>M</SizeM>
-          </Sizes>
+          {item.attributes.map((attribute) => (
+            <Sizes
+              key={`cart-attribute-index${attribute.id}`}
+              large={this.props.large}
+            >
+              {itemsRender(this.props.large, attribute.items).map((i) => (
+                <Size
+                  large={this.props.large}
+                  key={`cart-item-index${i.id}`}
+                  style={
+                    attribute.type === "swatch"
+                      ? { backgroundColor: i.value }
+                      : {}
+                  }
+                  onClick={() =>
+                    this.handleOptionSet(item.id, attribute.name, i)
+                  }
+                  swatchActive={checkSwatchType(
+                    attribute,
+                    i,
+                    item.selectedOptions
+                  )}
+                  active={
+                    i.displayValue ===
+                    item.selectedOptions[attribute.name].displayValue
+                  }
+                >
+                  {renderAttributeValue(this.props.large, attribute, i)}
+                </Size>
+              ))}
+            </Sizes>
+          ))}
         </CardDetails>
         <ItemDisplayContainer>
           <ItemQuantityWrapper>
             <AddButton
-              onClick={() => this.handleQuantityChange("add",item.id,item.quantity)}
+              onClick={() =>
+                this.handleQuantityChange("add", item.id, item.quantity)
+              }
               large={this.props.large}
             >
               +
             </AddButton>
             <ItemQuantity>{item.quantity}</ItemQuantity>
             <MinusButton
-              onClick={() => this.handleQuantityChange("remove",item.id,item.quantity)}
+              onClick={() =>
+                this.handleQuantityChange("remove", item.id, item.quantity)
+              }
               large={this.props.large}
+              disabled={item.quantity===1}
             >
               -
             </MinusButton>
           </ItemQuantityWrapper>
           <ItemDisplay>
             <ChevronArrowLeft
-             onClick={() => this.handleImageChange(item.gallery,'previous')}
+              onClick={() => this.handleImageChange(item.gallery, "previous")}
               src="/assets/vectors/arrow.svg"
               alt="chevron-arrow"
             />
-            <ChevronArrow onClick={() => this.handleImageChange(item.gallery, 'next')} src="/assets/vectors/arrow.svg" alt="chevron-arrow" />
+            <ChevronArrow
+              onClick={() => this.handleImageChange(item.gallery, "next")}
+              src="/assets/vectors/arrow.svg"
+              alt="chevron-arrow"
+            />
             <ItemImage src={this.state.setImage} alt="cart-item" />
           </ItemDisplay>
         </ItemDisplayContainer>
@@ -119,12 +162,14 @@ class index extends React.Component {
 
 const mapStateToProps = (state) => ({
   currency: state.selectedCurrency,
-  cart: state.cart
+  cart: state.cart,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   mutateQuantity: (mutationType, productId) =>
     dispatch(mutateProductQantity(mutationType, productId)),
+  changeCartSelectedOption: (productId, name, item) =>
+    dispatch(changeCartSelectedOption(productId, name, item)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(index);

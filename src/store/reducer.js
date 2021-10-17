@@ -1,4 +1,4 @@
-import {CARTMINI, CURRENCY, CATEGORY, ALLCURRENCY, ALLCATEGORY, ADDTOCART, MUTATEQUANTITY} from './types'
+import {CARTMINI, CURRENCY, CATEGORY, ALLCURRENCY, ALLCATEGORY, ADDTOCART, MUTATEQUANTITY, CART_SELECTED_OPTION} from './types'
 
 const defaultState = {
     isCartOpen:false,
@@ -67,6 +67,20 @@ const reducer = (state = defaultState,action) => {
                     result={...state,cart:cartUpdate}
                     break;
 
+
+                   case CART_SELECTED_OPTION:
+                        let cartToUpdate = state.cart.find(item => item.id===action.payload.productId)
+                        cartToUpdate.selectedOptions = {
+                            ...cartToUpdate.selectedOptions,
+                            [action.payload.name]:action.payload.value
+                        }
+
+                        const newUpdate = state.cart.map(item => {
+                            if(item.id=== action.payload.productId) return cartToUpdate
+                            return item
+                        })
+                        result = {...state,cart:newUpdate}
+                        break;
 
             default:
                 result=state

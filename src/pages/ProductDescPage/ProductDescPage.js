@@ -11,16 +11,28 @@ export const SmallSizes = styled.div`
     flex-direction:column;
     margin-right:2.5rem;
 `
-export const PDSmallImage = styled.img`
-    margin-bottom:2.5rem;
+export const PDSmallContainer = styled.span`
     width:4.937rem;
     height:5rem;
+    margin-bottom:2.5rem;
+
+    ${props => props.selected && css`
+        
+            border: 0.05px solid #5ECE7B;
+            border-radius:1rem;
+        
+    `}
+`
+
+export const PDSmallImage = styled.img`
+    width:100%;
+    height:100%;
     object-fit:contain;
 
+    
 `
 export const MainContainer = styled.div`
     display:flex;
-    
     column-gap:6.25rem; 
 `
 export const PDBigImage = styled.img`
@@ -79,7 +91,7 @@ export const PDSize = styled.div`
     `}
 
     ${props => props.swatchActive && css`
-        border: 3px solid green;
+        border: 3px solid #5ECE7B;
         
 
     `}

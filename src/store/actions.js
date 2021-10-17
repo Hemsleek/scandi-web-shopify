@@ -1,4 +1,4 @@
-import { CARTMINI, CATEGORY, CURRENCY,ALLCURRENCY, ALLCATEGORY, ADDTOCART, MUTATEQUANTITY } from "./types";
+import { CARTMINI, CATEGORY, CURRENCY,ALLCURRENCY, ALLCATEGORY, ADDTOCART, MUTATEQUANTITY, CART_SELECTED_OPTION } from "./types";
 
 
 export const toggleCart = () => ({
@@ -48,3 +48,11 @@ export const mutateProductQantity = (mutationType,productId) => ({
     }
 })
 
+export const changeCartSelectedOption = (productId,name,value) => ({
+    type:CART_SELECTED_OPTION,
+    payload:{
+        productId,
+        name,
+        value
+    }
+})

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import parse from 'html-react-parser'
+import parse from "html-react-parser";
 import { fetchData } from "../../Apollo";
 import { PRODUCT_QUERY } from "../../Apollo/queries";
 import { addToCart } from "../../store/actions";
@@ -20,10 +20,12 @@ import {
   PDSize,
   PDSizes,
   PDSizesWrapper,
+  PDSmallContainer,
   PDSmallImage,
   PDWrapper,
   SmallSizes,
 } from "./ProductDescPage";
+import { checkSwatchType } from "../../utils/helpers";
 
 class index extends React.Component {
   constructor(props) {
@@ -31,31 +33,29 @@ class index extends React.Component {
 
     this.state = {
       product: {},
-      selectedOptions:{
-
-      }
+      selectedOptions: {},
+      selectedSmallImage:0
     };
-    this.handleOptionSet = this.handleOptionSet.bind(this)
-    this.addItemToCart = this.addItemToCart.bind(this)
+    this.handleOptionSet = this.handleOptionSet.bind(this);
+    this.addItemToCart = this.addItemToCart.bind(this);
   }
 
-  handleOptionSet(name,item){
-    this.setState(currentState => ({
-      selectedOptions:{
+  handleOptionSet(name, item) {
+    this.setState((currentState) => ({
+      selectedOptions: {
         ...currentState.selectedOptions,
-        [name]:item
-      }
-    }))
-
+        [name]: item,
+      },
+    }));
   }
 
-  addItemToCart(){
+  addItemToCart() {
     const productToAdd = {
       ...this.state.product,
-      selectedOptions:this.state.selectedOptions
-    }
-    console.log({productToAdd})
-    this.props.addToCart(productToAdd)
+      selectedOptions: this.state.selectedOptions,
+    };
+    console.log({ productToAdd });
+    this.props.addToCart(productToAdd);
   }
 
   async componentDidMount() {
@@ -63,7 +63,10 @@ class index extends React.Component {
       const productId = this.props.match.params.id;
       const { data } = await fetchData(PRODUCT_QUERY(productId));
 
-      this.setState({ product: data.product,selectedOptions:setAtrributesDefault(data.product) });
+      this.setState({
+        product: data.product,
+        selectedOptions: setAtrributesDefault(data.product),
+      });
     } catch (error) {
       console.log(error);
     }
@@ -72,7 +75,7 @@ class index extends React.Component {
   render() {
     const productData = this.state.product;
 
-    console.log({options:this.state.selectedOptions})
+    console.log({ options: this.state.selectedOptions });
 
     console.log({ productData });
     const nameArr = String(productData.name).split(" ");
@@ -80,74 +83,90 @@ class index extends React.Component {
     const productShortDesc =
       nameArr.length > 3 ? nameArr.slice(1).join(" ") : "";
     let price = {};
-  
-  
+
     if (productData.prices) {
       price = getPriceInCurrencySelected(
         productData.prices,
         this.props.currency
       );
     }
-    let smallImages= []
-    let largeImage = ''
-    if(productData.gallery){
+
+    let smallImages = [];
+    let largeImage = "";
+    if (productData.gallery) {
+      smallImages =
+        productData.gallery.length > 3
+          ? productData.gallery.slice(0, 3)
+          : productData.gallery;
+      largeImage = productData.gallery[this.state.selectedSmallImage];
       
-      smallImages = productData.gallery.length >3 ? productData.gallery.slice(0,3) : productData.gallery
-      largeImage = productData.gallery[0]
     }
 
-    console.log({ productData,productName });
+    console.log({ productData, productName });
 
     return (
       <PDWrapper>
         <SmallSizes>
-          {smallImages
-            .map((img, imgIndex) => (
-              <PDSmallImage
-                src={img}
-                key={`Product-Desc-index${imgIndex}`}
-                alt="small-image"
-              />
-            ))}
+          {smallImages.map((img, imgIndex) => (
+            <PDSmallContainer
+              onClick={() => this.setState({selectedSmallImage:imgIndex})}
+              selected={imgIndex===this.state.selectedSmallImage}
+              key={`Product-Desc-index${imgIndex}`}
+            >
+              <PDSmallImage src={img} alt="small-image" />
+            </PDSmallContainer>
+          ))}
         </SmallSizes>
         <MainContainer>
           <PDBigImage src={largeImage} alt="big-item-image" />
           <PDDetails>
-            <PDName>{productName!=='undefined' && productName}</PDName>
-            <PDDesc>{productShortDesc || ''}</PDDesc>
-            { productData.attributes &&
+            <PDName>{productName !== "undefined" && productName}</PDName>
+            <PDDesc>{productShortDesc || ""}</PDDesc>
+            {productData.attributes &&
               productData.attributes.map((attribute) => (
-            <PDSizes key={`product-attribute-${attribute.id}`}>
-              <PDLabel>{attribute.name}:</PDLabel>
-              <PDSizesWrapper>
-                {attribute.items.map((item) => (
-                  <PDSize
-                    key={`product-description-size${item.id}`}
-                    onClick={() => this.handleOptionSet(attribute.name,item) }
-                    style={attribute.type==='swatch'? {backgroundColor: item.value}: {}}
-                    
-                    swatchActive = {attribute.type==='swatch' && attribute.name==='Color' && item.displayValue === this.state.selectedOptions[attribute.name].displayValue}
-
-                    active={item.displayValue === this.state.selectedOptions[attribute.name].displayValue}
-                    disabled={item.displayValue === "XS"}
-                  >
-                    {attribute.type!=='swatch' && item.displayValue}
-                  </PDSize>
-                ))}
-              </PDSizesWrapper>
-            </PDSizes>
-
-              ))
-            }
+                <PDSizes key={`product-attribute-${attribute.id}`}>
+                  <PDLabel>{attribute.name}:</PDLabel>
+                  <PDSizesWrapper>
+                    {attribute.items.map((item) => (
+                      <PDSize
+                        key={`product-description-size${item.id}`}
+                        onClick={() =>
+                          this.handleOptionSet(attribute.name, item)
+                        }
+                        style={
+                          attribute.type === "swatch"
+                            ? { backgroundColor: item.value }
+                            : {}
+                        }
+                        swatchActive={checkSwatchType(
+                          attribute,
+                          item,
+                          this.state.selectedOptions
+                        )}
+                        active={
+                          item.displayValue ===
+                          this.state.selectedOptions[attribute.name]
+                            .displayValue
+                        }
+                        disabled={item.displayValue === "XS"}
+                      >
+                        {attribute.type !== "swatch" &&
+                          (attribute.name === "Size"
+                            ? item.value
+                            : item.displayValue)}
+                      </PDSize>
+                    ))}
+                  </PDSizesWrapper>
+                </PDSizes>
+              ))}
             <PDPrice>
               <PDPriceLabel>PRICE:</PDPriceLabel>
-              <PDPriceValue>{productData.prices && `${price.currency} ${price.amount}`}</PDPriceValue>
+              <PDPriceValue>
+                {productData.prices && `${price.currency} ${price.amount}`}
+              </PDPriceValue>
             </PDPrice>
-            <PDButton onClick={this.addItemToCart}>
-              ADD TO CART
-            </PDButton>
+            <PDButton onClick={this.addItemToCart}>ADD TO CART</PDButton>
             <PDInfo>
-              
               {productData.description ? parse(productData.description) : ""}
             </PDInfo>
           </PDDetails>

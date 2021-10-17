@@ -2,9 +2,13 @@ import styled,{css} from 'styled-components'
 
 export const CartItemContainer = styled.div`
     margin-bottom:2.5rem;
+    max-height:13rem;
+    height:13rem;
+    overflow-y:hidden;
     display:flex;
     align-items: center;
     justify-content:space-between;
+
     ${props => props.large && css`
         border-top:1px solid #E5E5E5;
         padding-top:1.25rem;
@@ -15,6 +19,8 @@ export const CardDetails = styled.div`
     font-weight:300;
     display:flex;
     flex-direction: column;
+    max-height:100%;
+    overflow-y:auto;
 
     ${props => props.large && css`
         font-size:1.875rem;
@@ -62,11 +68,27 @@ export const Size = styled.span`
     width:1.5rem;
     font-weight:400;
     font-size:0.875rem;
+    user-select:none;
+    text-align:center;
+
 
     ${props => props.large && css`
         height:2.81rem;
         width:3.93rem;
     `}
+
+    ${props => props.active && css`
+        background-color:#1D1F22;
+        color:#fff;
+
+    `}
+
+    ${props => props.swatchActive && css`
+        border: 3px solid #5ECE7B;
+        
+
+    `}
+
 `
 export const SizeM = styled(Size)`
   border: 1px solid #A6A6A6;  
@@ -114,6 +136,14 @@ export const MinusButton = styled(Size)`
     ${props => props.large && css`
         width:2.81rem;
         height:2.81rem;
+
+    `}
+
+    ${props => props.disabled && css`
+
+        border: 1px solid #A6A6A6;  
+        background: rgba(166, 166, 166, 0.2);
+        color:#A6A6A6;        
 
     `}
 `

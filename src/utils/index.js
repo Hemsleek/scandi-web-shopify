@@ -18,3 +18,5 @@ export const setAtrributesDefault=(product) => {
 
     return selectedOptions
 }
+
+export const totalCartAmount = () => {}
