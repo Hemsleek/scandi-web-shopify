@@ -19,6 +19,7 @@ import {
 import CartItem from "../CartItem";
 import { connect } from "react-redux";
 import { toggleCart } from "../../store/actions";
+import { totalCartAmount } from "../../utils";
 
 class index extends React.Component {
   constructor(props) {
@@ -30,6 +31,8 @@ class index extends React.Component {
   render() {
 
     const cartItemToShow = this.props.cart.length > 2? this.props.cart.slice(0,2) : this.props.cart
+    const currency = this.props.selectedCurrency
+    const total = totalCartAmount(this.props.cart,currency).toFixed(2)
 
 
     return (
@@ -47,7 +50,7 @@ class index extends React.Component {
           {this.props.cart.length!==0 && (
             <TotalCost>
               <CostLabel>Total</CostLabel>
-              <CostValue>$100</CostValue>
+              <CostValue>{`${currency} ${total}`}</CostValue>
             </TotalCost>
           )}
           <ActionButtons>
@@ -64,6 +67,7 @@ class index extends React.Component {
 
 const mapStateToProps = (state) => ({
   cart: state.cart,
+  selectedCurrency: state.selectedCurrency
 
 });
 

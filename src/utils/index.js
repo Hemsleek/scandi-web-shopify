@@ -19,4 +19,11 @@ export const setAtrributesDefault=(product) => {
     return selectedOptions
 }
 
-export const totalCartAmount = () => {}
+export const totalCartAmount = (cartItems,selectedCurrency) => {
+    
+    return cartItems.reduce((acc,item) => {
+        const price = item.prices.find(price => price.currency === selectedCurrency).amount
+        const itemAmount = item.quantity * price
+        return acc + itemAmount
+    },0)
+}
