@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import parse from "html-react-parser";
-import { fetchData } from "../../Apollo";
-import { PRODUCT_QUERY } from "../../Apollo/queries";
+import opusClient from "../../OPUS";
+import { PRODUCT_QUERY } from "../../OPUS/queries";
 import { addToCart } from "../../store/actions";
 import { getPriceInCurrencySelected, setAtrributesDefault } from "../../utils";
 import {
@@ -25,6 +25,7 @@ import {
   PDWrapper,
   SmallSizes,
 } from "./ProductDescPage";
+
 import { checkSwatchType } from "../../utils/helpers";
 
 class index extends React.Component {
@@ -34,7 +35,7 @@ class index extends React.Component {
     this.state = {
       product: {},
       selectedOptions: {},
-      selectedSmallImage:0
+      selectedSmallImage: 0,
     };
     this.handleOptionSet = this.handleOptionSet.bind(this);
     this.addItemToCart = this.addItemToCart.bind(this);
@@ -54,18 +55,17 @@ class index extends React.Component {
       ...this.state.product,
       selectedOptions: this.state.selectedOptions,
     };
-    console.log({ productToAdd });
     this.props.addToCart(productToAdd);
   }
 
   async componentDidMount() {
     try {
       const productId = this.props.match.params.id;
-      const { data } = await fetchData(PRODUCT_QUERY(productId));
+      const { product } = await opusClient.post(PRODUCT_QUERY(productId));
 
       this.setState({
-        product: data.product,
-        selectedOptions: setAtrributesDefault(data.product),
+        product,
+        selectedOptions: setAtrributesDefault(product),
       });
     } catch (error) {
       console.log(error);
@@ -74,10 +74,8 @@ class index extends React.Component {
 
   render() {
     const productData = this.state.product;
+    const isDataFetched = Object.keys(productData).length;
 
-    console.log({ options: this.state.selectedOptions });
-
-    console.log({ productData });
     const nameArr = String(productData.name).split(" ");
     const productName = nameArr.length > 3 ? nameArr[0] : nameArr.join(" ");
     const productShortDesc =
@@ -99,79 +97,79 @@ class index extends React.Component {
           ? productData.gallery.slice(0, 3)
           : productData.gallery;
       largeImage = productData.gallery[this.state.selectedSmallImage];
-      
     }
 
-    console.log({ productData, productName });
-
     return (
-      <PDWrapper>
-        <SmallSizes>
-          {smallImages.map((img, imgIndex) => (
-            <PDSmallContainer
-              onClick={() => this.setState({selectedSmallImage:imgIndex})}
-              selected={imgIndex===this.state.selectedSmallImage}
-              key={`Product-Desc-index${imgIndex}`}
-            >
-              <PDSmallImage src={img} alt="small-image" />
-            </PDSmallContainer>
-          ))}
-        </SmallSizes>
-        <MainContainer>
-          <PDBigImage src={largeImage} alt="big-item-image" />
-          <PDDetails>
-            <PDName>{productName !== "undefined" && productName}</PDName>
-            <PDDesc>{productShortDesc || ""}</PDDesc>
-            {productData.attributes &&
-              productData.attributes.map((attribute) => (
-                <PDSizes key={`product-attribute-${attribute.id}`}>
-                  <PDLabel>{attribute.name}:</PDLabel>
-                  <PDSizesWrapper>
-                    {attribute.items.map((item) => (
-                      <PDSize
-                        key={`product-description-size${item.id}`}
-                        onClick={() =>
-                          this.handleOptionSet(attribute.name, item)
-                        }
-                        style={
-                          attribute.type === "swatch"
-                            ? { backgroundColor: item.value }
-                            : {}
-                        }
-                        swatchActive={checkSwatchType(
-                          attribute,
-                          item,
-                          this.state.selectedOptions
-                        )}
-                        active={
-                          item.displayValue ===
-                          this.state.selectedOptions[attribute.name]
-                            .displayValue
-                        }
-                        disabled={item.displayValue === "XS"}
-                      >
-                        {attribute.type !== "swatch" &&
-                          (attribute.name === "Size"
-                            ? item.value
-                            : item.displayValue)}
-                      </PDSize>
-                    ))}
-                  </PDSizesWrapper>
-                </PDSizes>
+      <>
+        {isDataFetched !== 0 && (
+          <PDWrapper>
+            <SmallSizes>
+              {smallImages.map((img, imgIndex) => (
+                <PDSmallContainer
+                  onClick={() =>
+                    this.setState({ selectedSmallImage: imgIndex })
+                  }
+                  selected={imgIndex === this.state.selectedSmallImage}
+                  key={`Product-Desc-index${imgIndex}`}
+                >
+                  <PDSmallImage src={img} alt="small-image" />
+                </PDSmallContainer>
               ))}
-            <PDPrice>
-              <PDPriceLabel>PRICE:</PDPriceLabel>
-              <PDPriceValue>
-                {productData.prices && `${price.currency} ${price.amount}`}
-              </PDPriceValue>
-            </PDPrice>
-            <PDButton onClick={this.addItemToCart}>ADD TO CART</PDButton>
-            <PDInfo>
-              {productData.description ? parse(productData.description) : ""}
-            </PDInfo>
-          </PDDetails>
-        </MainContainer>
-      </PDWrapper>
+            </SmallSizes>
+            <MainContainer>
+              <PDBigImage src={largeImage} alt="big-item-image" />
+              <PDDetails>
+                <PDName>{productName}</PDName>
+                <PDDesc>{productShortDesc}</PDDesc>
+                {productData.attributes.map((attribute) => (
+                  <PDSizes key={`product-attribute-${attribute.id}`}>
+                    <PDLabel>{attribute.name}:</PDLabel>
+                    <PDSizesWrapper>
+                      {attribute.items.map((item) => (
+                        <PDSize
+                          key={`product-description-size${item.id}`}
+                          onClick={() =>
+                            this.handleOptionSet(attribute.name, item)
+                          }
+                          style={
+                            attribute.type === "swatch"
+                              ? { backgroundColor: item.value }
+                              : {}
+                          }
+                          swatchActive={checkSwatchType(
+                            attribute,
+                            item,
+                            this.state.selectedOptions
+                          )}
+                          active={
+                            item.displayValue ===
+                            this.state.selectedOptions[attribute.name]
+                              .displayValue
+                          }
+                          disabled={item.displayValue === "XS"}
+                        >
+                          {attribute.type !== "swatch" &&
+                            (attribute.name === "Size"
+                              ? item.value
+                              : item.displayValue)}
+                        </PDSize>
+                      ))}
+                    </PDSizesWrapper>
+                  </PDSizes>
+                ))}
+                <PDPrice>
+                  <PDPriceLabel>PRICE:</PDPriceLabel>
+                  <PDPriceValue>
+                    {`${price.currency} ${price.amount}`}
+                  </PDPriceValue>
+                </PDPrice>
+                <PDButton onClick={this.addItemToCart}>ADD TO CART</PDButton>
+                <PDInfo>{parse(productData.description)}</PDInfo>
+              </PDDetails>
+            </MainContainer>
+          </PDWrapper>
+        )}
+      </>
     );
   }
 }

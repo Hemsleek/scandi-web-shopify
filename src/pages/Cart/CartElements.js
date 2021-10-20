@@ -14,3 +14,10 @@ export const CWrapper = styled.div`
     padding-bottom:12rem;
 
 `
+export const EmptyCart = styled.span`
+    text-align:center;
+    font-size:2.5rem;
+    margin-top:1rem;
+    font-weight:300;
+    opacity:0.5;
+`

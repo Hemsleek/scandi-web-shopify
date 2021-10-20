@@ -29,11 +29,12 @@ class index extends React.Component {
   }
 
   render() {
-
-    const cartItemToShow = this.props.cart.length > 2? this.props.cart.slice(0,2) : this.props.cart
-    const currency = this.props.selectedCurrency
-    const total = totalCartAmount(this.props.cart,currency).toFixed(2)
-
+    const cartItemToShow =
+      this.props.cart.length > 2
+        ? this.props.cart.slice(0, 2)
+        : this.props.cart;
+    const currency = this.props.selectedCurrency;
+    const total = totalCartAmount(this.props.cart, currency).toFixed(2);
 
     return (
       <CartOverlayWrapper>
@@ -47,16 +48,16 @@ class index extends React.Component {
               <CartItem key={`cart-item${itemIndex}`} cartItemId={item.id} />
             ))}
           </CartItemWrapper>
-          {this.props.cart.length!==0 && (
+          {this.props.cart.length !== 0 && (
             <TotalCost>
               <CostLabel>Total</CostLabel>
               <CostValue>{`${currency} ${total}`}</CostValue>
             </TotalCost>
           )}
           <ActionButtons>
-              <LinkToCart onClick={this.props.toggleCart} to='/cart'>
-                    <ViewBag>VIEW BAG</ViewBag>
-              </LinkToCart>
+            <LinkToCart onClick={this.props.toggleCart} to="/cart">
+              <ViewBag>VIEW BAG</ViewBag>
+            </LinkToCart>
             <CheckOut>CHECK OUT</CheckOut>
           </ActionButtons>
         </MiniCart>
@@ -67,12 +68,11 @@ class index extends React.Component {
 
 const mapStateToProps = (state) => ({
   cart: state.cart,
-  selectedCurrency: state.selectedCurrency
-
+  selectedCurrency: state.selectedCurrency,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    toggleCart:() => dispatch(toggleCart())
-  });
+  toggleCart: () => dispatch(toggleCart()),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(index);

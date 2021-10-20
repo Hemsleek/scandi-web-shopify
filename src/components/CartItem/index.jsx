@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import {
   changeCartSelectedOption,
+  deleteCartItem,
   mutateProductQantity,
 } from "../../store/actions";
 import { getPriceInCurrencySelected } from "../../utils";
@@ -27,6 +28,8 @@ import {
   Sizes,
   ChevronArrow,
   ChevronArrowLeft,
+  RemoveButton,
+  CardDetailsWrapper,
 } from "./CartItemElements";
 
 class index extends React.Component {
@@ -40,6 +43,12 @@ class index extends React.Component {
     this.handleQuantityChange = this.handleQuantityChange.bind(this);
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleOptionSet = this.handleOptionSet.bind(this);
+    this.handleCartItemDelete = this.handleCartItemDelete.bind(this);
+  }
+
+  componentDidMount() {
+    const item = this.props.cart.find((i) => i.id === this.props.cartItemId);
+    this.setState({ setImage: item.gallery[0] });
   }
 
   handleOptionSet(productId, name, item) {
@@ -63,15 +72,17 @@ class index extends React.Component {
     }
   }
 
-  componentDidMount() {
-    const item = this.props.cart.find((i) => i.id === this.props.cartItemId);
-    this.setState({ setImage: item.gallery[0] });
+  handleCartItemDelete(productId, productName) {
+    if (
+      window.confirm(
+        `Are you sure you want to remove item '${productName}' from cart?`
+      )
+    )
+      this.props.deleteCartItem(productId);
   }
 
   render() {
     const item = this.props.cart.find((i) => i.id === this.props.cartItemId);
-    console.log({ item });
-    console.log({ items: item.attributes[0].items });
     const nameArr = String(item.name).split(" ");
     const productName = nameArr.length > 3 ? nameArr[0] : nameArr.join(" ");
     const productShortDesc =
@@ -81,6 +92,7 @@ class index extends React.Component {
 
     return (
       <CartItemContainer large={this.props.large}>
+        <CardDetailsWrapper>
         <CardDetails large={this.props.large}>
           <ItemName large={this.props.large}>{productName}</ItemName>
           <ItemDesc>{productShortDesc}</ItemDesc>
@@ -119,7 +131,15 @@ class index extends React.Component {
               ))}
             </Sizes>
           ))}
+          
         </CardDetails>
+        <RemoveButton
+            large={this.props.large}
+            onClick={() => this.handleCartItemDelete(item.id, item.name)}
+          >
+            Remove
+          </RemoveButton>
+        </CardDetailsWrapper>
         <ItemDisplayContainer>
           <ItemQuantityWrapper>
             <AddButton
@@ -136,7 +156,7 @@ class index extends React.Component {
                 this.handleQuantityChange("remove", item.id, item.quantity)
               }
               large={this.props.large}
-              disabled={item.quantity===1}
+              disabled={item.quantity === 1}
             >
               -
             </MinusButton>
@@ -170,6 +190,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(mutateProductQantity(mutationType, productId)),
   changeCartSelectedOption: (productId, name, item) =>
     dispatch(changeCartSelectedOption(productId, name, item)),
+  deleteCartItem: (productId) => dispatch(deleteCartItem(productId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(index);

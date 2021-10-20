@@ -1,7 +1,15 @@
 import React from "react";
-import {connect} from 'react-redux' 
-import { changeCurrency, setAllCategory, setCategory, setCurrencies, toggleCart } from "../../store/actions";
-import { fetchData } from '../../Apollo'
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import {
+  changeCurrency,
+  setAllCategory,
+  setCategory,
+  setCurrencies,
+  toggleCart,
+} from "../../store/actions";
+import opusClient from "../../OPUS";
+import { ALL_CURRENCY, ALL_CATEGORY } from "../../OPUS/queries";
 
 //Components Styles
 import {
@@ -16,10 +24,8 @@ import {
   SideActions,
   SideActionsWrapper,
   Tab,
-  CurrencyDisplay
+  CurrencyDisplay,
 } from "./NavBarElements";
-import { ALL_CURRENCY,ALL_CATEGORY } from "../../Apollo/queries";
-import { Link } from "react-router-dom";
 
 class index extends React.Component {
   constructor(props) {
@@ -27,51 +33,49 @@ class index extends React.Component {
 
     this.state = {
       showFilterOptions: false,
-      
     };
 
     this.toggleFilter = this.toggleFilter.bind(this);
-    this.handleCurrencyChange= this.handleCurrencyChange.bind(this);
-
+    this.handleCurrencyChange = this.handleCurrencyChange.bind(this);
   }
 
-  async componentDidMount(){  
-      try {
-        const response = await Promise.allSettled([fetchData(ALL_CURRENCY),fetchData(ALL_CATEGORY)])
-        const [allCurrencyData, allCategoryData] = response
+  async componentDidMount() {
+    try {
+      const response = await Promise.allSettled([
+        opusClient.post(ALL_CURRENCY),
+        opusClient.post(ALL_CATEGORY),
+      ]);
+      const [allCurrencyData, allCategoryData] = response;
 
-        if(allCurrencyData.status === 'fulfilled'){
-          const {currencies} = allCurrencyData.value.data
-          this.props.setCurrencies(currencies)
-          this.props.changeCurrency(currencies[0])
-
-        }
-        if(allCategoryData.status === 'fulfilled'){
-          const {categories} = allCategoryData.value.data
-          this.props.setAllCategory(categories)
-          this.props.setCategory(categories[0].name)
-        }
-        
-      } catch (error) {
-        console.log(error)
+      if (allCurrencyData.status === "fulfilled") {
+        const { currencies } = allCurrencyData.value;
+        this.props.setCurrencies(currencies);
+        this.props.changeCurrency(currencies[0]);
       }
+      if (allCategoryData.status === "fulfilled") {
+        const { categories } = allCategoryData.value;
+        this.props.setAllCategory(categories);
+        this.props.setCategory(categories[0].name);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   toggleFilter() {
-      this.setState((CurrentState) => ({
-        showFilterOptions: !CurrentState.showFilterOptions,
-      }));
-    
+    this.setState((CurrentState) => ({
+      showFilterOptions: !CurrentState.showFilterOptions,
+    }));
   }
 
-  handleCurrencyChange(currency){
-      this.props.changeCurrency(currency)
-      this.toggleFilter()
+  handleCurrencyChange(currency) {
+    this.props.changeCurrency(currency);
+    this.toggleFilter();
   }
 
   render() {
     const navTabs = this.props.tabs;
-    const showBadges = this.props.cart.length >0 
+    const showBadges = this.props.cart.length > 0;
 
     return (
       <NavBarContainer>
@@ -79,7 +83,9 @@ class index extends React.Component {
           {navTabs.map((tab, tabIndex) => (
             <Tab
               key={`nav-tab-index${tabIndex}`}
-              className={this.props.selectedCategory === tab.name ? "active" : ""}
+              className={
+                this.props.selectedCategory === tab.name ? "active" : ""
+              }
               onClick={() => this.props.setCategory(tab.name)}
             >
               {tab.name}
@@ -92,12 +98,11 @@ class index extends React.Component {
         <SideActionsWrapper>
           <SideActions>
             <Filter onClick={() => this.toggleFilter()}>
-              
               <CurrencyDisplay>{this.props.currency}</CurrencyDisplay>
               <ImgWrapper
                 src="/assets/vectors/caret-arrow.svg"
                 alt="caret-arrow"
-                rotate={this.state.showFilterOptions}
+                rotate={this.state.showFilterOptions===true ? 'true' : ''}
               />
             </Filter>
             <Cart onClick={() => this.props.toggleCart()}>
@@ -108,7 +113,10 @@ class index extends React.Component {
           {this.state.showFilterOptions && (
             <FilterOptions>
               {this.props.currencies.map((option, optionIndex) => (
-                <Option key={`filter-option-index${optionIndex}`} onClick={() => this.handleCurrencyChange(option)}>
+                <Option
+                  key={`filter-option-index${optionIndex}`}
+                  onClick={() => this.handleCurrencyChange(option)}
+                >
                   {option}
                 </Option>
               ))}
@@ -120,19 +128,19 @@ class index extends React.Component {
   }
 }
 const mapStateToProps = (state) => ({
-  currency:state.selectedCurrency,
-  tabs:state.categories,
-  selectedCategory:state.selectedCategory,
-  currencies:state.currencies,
-  cart:state.cart
-})
+  currency: state.selectedCurrency,
+  tabs: state.categories,
+  selectedCategory: state.selectedCategory,
+  currencies: state.currencies,
+  cart: state.cart,
+});
 
 const mapDispatchToProps = (dispatch) => ({
-  toggleCart:() => dispatch(toggleCart()),
-  changeCurrency:(currency) => dispatch(changeCurrency(currency)),
-  setCategory:(option) => dispatch(setCategory(option)),
-  setCurrencies:(currencies) => dispatch(setCurrencies(currencies)),
-  setAllCategory:(categories) => dispatch(setAllCategory(categories))
-})
+  toggleCart: () => dispatch(toggleCart()),
+  changeCurrency: (currency) => dispatch(changeCurrency(currency)),
+  setCategory: (option) => dispatch(setCategory(option)),
+  setCurrencies: (currencies) => dispatch(setCurrencies(currencies)),
+  setAllCategory: (categories) => dispatch(setAllCategory(categories)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(index);

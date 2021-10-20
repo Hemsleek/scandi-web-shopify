@@ -15,11 +15,20 @@ export const CartItemContainer = styled.div`
     `}
 
 `
-export const CardDetails = styled.div`
-    font-weight:300;
+export const CardDetailsWrapper = styled.div`
     display:flex;
     flex-direction: column;
-    max-height:100%;
+    overflow-y: hidden;
+    height:100%;
+    max-height: 100%;
+    flex-grow:1;
+`
+
+export const CardDetails = styled.div`
+    font-weight:300;
+    flex-grow:1;
+    display:flex;
+    flex-direction: column;
     overflow-y:auto;
 
     ${props => props.large && css`
@@ -179,4 +188,22 @@ export const ChevronArrowLeft = styled(ChevronArrow)`
     transition:0.2s all ease-in-out;
 `
 
+export const RemoveButton = styled.button`
+    outline:none;
+    background-color: #fff;
+    width:fit-content;
+    padding:0.5rem;
+    margin-top:1rem;
+    border:1px solid #1D1F22;
+    font-size:1rem;
+    border-radius:0.5rem;
+    cursor:pointer;
+    font-weight:300;
 
+
+    ${props => props.large && css`
+        padding:1rem;
+        font-weight:500;
+    `}
+
+`
