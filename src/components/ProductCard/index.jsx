@@ -26,7 +26,6 @@ class ProductCard extends Component {
   }
 
   addItemToCart() {
-    console.log({ p: this.props.productData });
     const productToAdd = {
       ...this.props.productData,
       selectedOptions: setAtrributesDefault(this.props.productData),
