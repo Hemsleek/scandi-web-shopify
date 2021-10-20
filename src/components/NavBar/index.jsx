@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createRef } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -35,11 +35,16 @@ class index extends React.Component {
       showFilterOptions: false,
     };
 
+    this.currencyBox = createRef();
+
     this.toggleFilter = this.toggleFilter.bind(this);
     this.handleCurrencyChange = this.handleCurrencyChange.bind(this);
+    this.currencyClickAway = this.currencyClickAway.bind(this);
   }
 
   async componentDidMount() {
+    document.addEventListener("mousedown", this.currencyClickAway);
+
     try {
       const response = await Promise.allSettled([
         opusClient.post(ALL_CURRENCY),
@@ -62,6 +67,10 @@ class index extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.currencyClickAway);
+  }
+
   toggleFilter() {
     this.setState((CurrentState) => ({
       showFilterOptions: !CurrentState.showFilterOptions,
@@ -71,6 +80,15 @@ class index extends React.Component {
   handleCurrencyChange(currency) {
     this.props.changeCurrency(currency);
     this.toggleFilter();
+  }
+
+  currencyClickAway(event) {
+    if (!this.state.showFilterOptions) return null;
+    if (
+      this.currencyBox.current &&
+      !this.currencyBox.current.contains(event.target)
+    )
+      this.setState({ showFilterOptions: false });
   }
 
   render() {
@@ -102,7 +120,7 @@ class index extends React.Component {
               <ImgWrapper
                 src="/assets/vectors/caret-arrow.svg"
                 alt="caret-arrow"
-                rotate={this.state.showFilterOptions===true ? 'true' : ''}
+                rotate={this.state.showFilterOptions === true ? "true" : ""}
               />
             </Filter>
             <Cart onClick={() => this.props.toggleCart()}>
@@ -111,7 +129,7 @@ class index extends React.Component {
             </Cart>
           </SideActions>
           {this.state.showFilterOptions && (
-            <FilterOptions>
+            <FilterOptions ref={this.currencyBox}>
               {this.props.currencies.map((option, optionIndex) => (
                 <Option
                   key={`filter-option-index${optionIndex}`}
