@@ -1,7 +1,8 @@
 import { client} from '@tilework/opus';
 
+const graphqlEndpoint = process.env.REACT_APP_GRAPHQL_ENDPOINT
 
- client.setEndpoint('http://localhost:4000/')
+ client.setEndpoint(graphqlEndpoint)
 
 
  
