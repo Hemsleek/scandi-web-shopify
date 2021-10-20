@@ -6,6 +6,9 @@ import GlobalStyle from "./globalStyles";
 
 //Components
 import PageLayout from './components/PageLayout'
+import styled from "styled-components";
+
+const AppWrapper = styled.div`` 
 class App extends Component {
   constructor(props) {
     super(props);
@@ -17,11 +20,11 @@ class App extends Component {
     return (
       <Fragment>
         <GlobalStyle />
-        <div className="App">
+        <AppWrapper>
           <PageLayout>
             <Routes />
           </PageLayout>
-        </div>
+        </AppWrapper>
       </Fragment>
     );
   }
