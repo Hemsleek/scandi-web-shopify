@@ -1,3 +1,9 @@
+# Running the project successfully
+
+There is a file on the root directory '.env.example' where the sample for the environment variable needed to run the project is,create a .env file and add the variable(s) in the sample file(.env.example) with actual value
+
+**Example: REACT_APP_GRAPHQL_ENDPOINT='http://localhost:5050'!**
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
