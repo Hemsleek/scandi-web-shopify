@@ -4,6 +4,8 @@ There is a file on the root directory '.env.example' where the sample for the en
 
 **Example: REACT_APP_GRAPHQL_ENDPOINT='http://localhost:5050'**
 
+**Note: Any changes made to the .env file will only reflect after the project server is killed and restarted**
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
