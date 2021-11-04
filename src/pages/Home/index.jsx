@@ -17,13 +17,13 @@ class index extends Component {
 
   async componentDidMount() {
     try {
-      if (this.props.selectedCategory) {
-        const { category } = await opusClient.post(
-          CATEGORY_QUERY(this.props.selectedCategory)
-        );
+      const selectedCat =
+        this.props.selectedCategory === "all"
+          ? ""
+          : this.props.selectedCategory;
+      const { category } = await opusClient.post(CATEGORY_QUERY(selectedCat));
 
-        this.setState({ category });
-      }
+      this.setState({ category });
     } catch (error) {
       console.log(error);
     }
@@ -32,9 +32,11 @@ class index extends Component {
   async componentDidUpdate(prevProps) {
     try {
       if (prevProps.selectedCategory !== this.props.selectedCategory) {
-        const { category } = await opusClient.post(
-          CATEGORY_QUERY(this.props.selectedCategory)
-        );
+        const selectedCat =
+          this.props.selectedCategory === "all"
+            ? ""
+            : this.props.selectedCategory;
+        const { category } = await opusClient.post(CATEGORY_QUERY(selectedCat));
         this.setState({ category });
       }
     } catch (error) {

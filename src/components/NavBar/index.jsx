@@ -59,8 +59,8 @@ class index extends React.Component {
       }
       if (allCategoryData.status === "fulfilled") {
         const { categories } = allCategoryData.value;
-        this.props.setAllCategory(categories);
-        this.props.setCategory(categories[0].name);
+        const myCategories = [{ name: "all" }, ...categories];
+        this.props.setAllCategory(myCategories);
       }
     } catch (error) {
       console.log(error);

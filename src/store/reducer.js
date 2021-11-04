@@ -5,7 +5,7 @@ const defaultState = {
     currencies: [],
     categories: [],
     selectedCurrency: '',
-    selectedCategory: '',
+    selectedCategory: 'all',
     cart: []
 }
 

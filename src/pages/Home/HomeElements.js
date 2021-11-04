@@ -14,4 +14,5 @@ export const ProductWrapper = styled.div`
     grid-column-gap: 2.5rem;
     grid-row-gap: 6.44rem;
     padding-bottom:12rem;
+    place-content: center;
 `
