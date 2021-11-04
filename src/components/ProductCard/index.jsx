@@ -37,9 +37,8 @@ class ProductCard extends Component {
   handleProductDetails(e) {
     if (e.target.alt === "green-cart") return null;
 
-    const { inStock, id } = this.props.productData;
-    if (!inStock) return null;
-    const { history } = this.props;
+    var { id } = this.props.productData;
+    var { history } = this.props;
     history.push(`/product/${id}`);
   }
 

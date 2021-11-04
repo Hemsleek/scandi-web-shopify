@@ -3,25 +3,25 @@ import styled, { css } from "styled-components";
 export const ProductWrapper = styled.div`
     padding:1rem;
     transition:0.2s all ease-in-out;
-    
-    ${props => props.outOfStock && css`
-    opacity:0.5;
-    `
-    }
-    ${props => !(props.outOfStock) && css`
-        
+
     &:hover{
         background-color: #fff;
         box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.19);
 
-        img[alt="green-cart"]{
-            display:inline-flex;
-        }
+        ${props => !(props.outOfStock) && css`
+            img[alt="green-cart"]{
+                display:inline-flex;
+            }
+        
+        `}
     }
-        `
+
+
+    ${props => props.outOfStock && css`
+        opacity:0.5;
+    `
     }
 `
-
 export const PrdImgWrapper = styled.div`
     position: relative;
     width:100%;

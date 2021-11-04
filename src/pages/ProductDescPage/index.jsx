@@ -61,7 +61,7 @@ class index extends React.Component {
   async componentDidMount() {
     try {
       const productId = this.props.match.params.id;
-      const { product } = await opusClient.post(PRODUCT_QUERY(productId));
+      var { product } = await opusClient.post(PRODUCT_QUERY(productId));
 
       this.setState({
         product,
@@ -163,7 +163,13 @@ class index extends React.Component {
                     {`${price.currency} ${price.amount}`}
                   </PDPriceValue>
                 </PDPrice>
-                <PDButton onClick={this.addItemToCart}>ADD TO CART</PDButton>
+                <PDButton
+                  disabled={!productData.inStock}
+                  outOfStock={productData.inStock}
+                  onClick={this.addItemToCart}
+                >
+                  ADD TO CART
+                </PDButton>
                 <PDInfo>{parse(productData.description)}</PDInfo>
               </PDDetails>
             </MainContainer>

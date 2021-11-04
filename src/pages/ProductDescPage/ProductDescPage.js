@@ -124,6 +124,11 @@ export const PDButton = styled.button`
     padding:1rem 0;
     margin-bottom:2.5rem;
     width:18.3rem;
+
+    ${props => !(props.outOfStock) && css`
+        background-color: rgba(128,128,128,0.4);
+        cursor: not-allowed;
+    `}
 `
 export const PDInfo = styled.span`
     max-width:18.3rem;

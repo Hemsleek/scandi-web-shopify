@@ -21,7 +21,7 @@ class index extends Component {
         this.props.selectedCategory === "all"
           ? ""
           : this.props.selectedCategory;
-      const { category } = await opusClient.post(CATEGORY_QUERY(selectedCat));
+      var { category } = await opusClient.post(CATEGORY_QUERY(selectedCat));
 
       this.setState({ category });
     } catch (error) {
@@ -36,7 +36,7 @@ class index extends Component {
           this.props.selectedCategory === "all"
             ? ""
             : this.props.selectedCategory;
-        const { category } = await opusClient.post(CATEGORY_QUERY(selectedCat));
+        var { category } = await opusClient.post(CATEGORY_QUERY(selectedCat));
         this.setState({ category });
       }
     } catch (error) {

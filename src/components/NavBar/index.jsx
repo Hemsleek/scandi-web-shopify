@@ -50,15 +50,15 @@ class index extends React.Component {
         opusClient.post(ALL_CURRENCY),
         opusClient.post(ALL_CATEGORY),
       ]);
-      const [allCurrencyData, allCategoryData] = response;
+      var [allCurrencyData, allCategoryData] = response;
 
       if (allCurrencyData.status === "fulfilled") {
-        const { currencies } = allCurrencyData.value;
+        var { currencies } = allCurrencyData.value;
         this.props.setCurrencies(currencies);
         this.props.changeCurrency(currencies[0]);
       }
       if (allCategoryData.status === "fulfilled") {
-        const { categories } = allCategoryData.value;
+        var { categories } = allCategoryData.value;
         const myCategories = [{ name: "all" }, ...categories];
         this.props.setAllCategory(myCategories);
       }
