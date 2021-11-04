@@ -1,4 +1,4 @@
-import styled,{css} from 'styled-components'
+import styled, { css } from 'styled-components'
 
 export const CartItemContainer = styled.div`
     margin-bottom:2.5rem;
@@ -15,17 +15,10 @@ export const CartItemContainer = styled.div`
     `}
 
 `
-export const CardDetailsWrapper = styled.div`
-    display:flex;
-    flex-direction: column;
-    overflow-y: hidden;
-    height:100%;
-    max-height: 100%;
-    flex-grow:1;
-`
 
 export const CardDetails = styled.div`
     font-weight:300;
+    max-height: 100%;
     flex-grow:1;
     display:flex;
     flex-direction: column;
@@ -148,13 +141,6 @@ export const MinusButton = styled(Size)`
 
     `}
 
-    ${props => props.disabled && css`
-
-        border: 1px solid #A6A6A6;  
-        background: rgba(166, 166, 166, 0.2);
-        color:#A6A6A6;        
-
-    `}
 `
 export const ItemDisplay = styled.div`
     position:relative;
@@ -188,22 +174,3 @@ export const ChevronArrowLeft = styled(ChevronArrow)`
     transition:0.2s all ease-in-out;
 `
 
-export const RemoveButton = styled.button`
-    outline:none;
-    background-color: #fff;
-    width:fit-content;
-    padding:0.5rem;
-    margin-top:1rem;
-    border:1px solid #1D1F22;
-    font-size:1rem;
-    border-radius:0.5rem;
-    cursor:pointer;
-    font-weight:300;
-
-
-    ${props => props.large && css`
-        padding:1rem;
-        font-weight:500;
-    `}
-
-`

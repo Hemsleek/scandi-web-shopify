@@ -28,8 +28,6 @@ import {
   Sizes,
   ChevronArrow,
   ChevronArrowLeft,
-  RemoveButton,
-  CardDetailsWrapper,
 } from "./CartItemElements";
 
 class index extends React.Component {
@@ -55,8 +53,11 @@ class index extends React.Component {
     this.props.changeCartSelectedOption(productId, name, item);
   }
 
-  handleQuantityChange(mutationType, id, quantity) {
-    if (mutationType === "remove" && quantity === 1) return null;
+  handleQuantityChange(mutationType, { id, quantity, name }) {
+    if (mutationType === "remove" && quantity === 1) {
+      this.handleCartItemDelete(id, name);
+      return null;
+    }
     this.props.mutateQuantity(mutationType, id);
   }
 
@@ -92,7 +93,6 @@ class index extends React.Component {
 
     return (
       <CartItemContainer large={this.props.large}>
-        <CardDetailsWrapper>
         <CardDetails large={this.props.large}>
           <ItemName large={this.props.large}>{productName}</ItemName>
           <ItemDesc>{productShortDesc}</ItemDesc>
@@ -131,32 +131,20 @@ class index extends React.Component {
               ))}
             </Sizes>
           ))}
-          
         </CardDetails>
-        <RemoveButton
-            large={this.props.large}
-            onClick={() => this.handleCartItemDelete(item.id, item.name)}
-          >
-            Remove
-          </RemoveButton>
-        </CardDetailsWrapper>
+
         <ItemDisplayContainer>
           <ItemQuantityWrapper>
             <AddButton
-              onClick={() =>
-                this.handleQuantityChange("add", item.id, item.quantity)
-              }
+              onClick={() => this.handleQuantityChange("add", item)}
               large={this.props.large}
             >
               +
             </AddButton>
             <ItemQuantity>{item.quantity}</ItemQuantity>
             <MinusButton
-              onClick={() =>
-                this.handleQuantityChange("remove", item.id, item.quantity)
-              }
+              onClick={() => this.handleQuantityChange("remove", item)}
               large={this.props.large}
-              disabled={item.quantity === 1}
             >
               -
             </MinusButton>
