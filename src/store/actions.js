@@ -1,56 +1,57 @@
-import { CARTMINI, CATEGORY, CURRENCY,ALLCURRENCY, ALLCATEGORY, ADDTOCART, MUTATEQUANTITY, CART_SELECTED_OPTION, DELETE_ITEM_IN_CART } from "./types";
+import { CARTMINI, CATEGORY, CURRENCY, ALLCURRENCY, ALLCATEGORY, ADDTOCART, MUTATEQUANTITY, CART_SELECTED_OPTION, DELETE_ITEM_IN_CART } from "./types";
 
 
 export const toggleCart = () => ({
-    type:CARTMINI
+    type: CARTMINI
 })
 
 export const changeCurrency = (currency) => ({
-    type:CURRENCY,
-    payload:{
+    type: CURRENCY,
+    payload: {
         currency
     }
 })
 
 export const setCategory = (tab) => ({
-    type:CATEGORY,
-    payload:{
+    type: CATEGORY,
+    payload: {
         tab
     }
 })
 
 export const setAllCategory = (categories) => ({
-    type:ALLCATEGORY,
-    payload:{
+    type: ALLCATEGORY,
+    payload: {
         categories
     }
 })
 
 export const setCurrencies = (currencies) => ({
-    type:ALLCURRENCY,
-    payload:{
+    type: ALLCURRENCY,
+    payload: {
         currencies
     }
 })
 
 export const addToCart = (product) => ({
-    type:ADDTOCART,
-    payload:{
+    type: ADDTOCART,
+    payload: {
         product
     }
 })
 
-export const mutateProductQantity = (mutationType,productId) => ({
-    type:MUTATEQUANTITY,
-    payload:{
+export const mutateProductQantity = (mutationType, productId, newSelectedOption) => ({
+    type: MUTATEQUANTITY,
+    payload: {
         mutationType,
-        productId
+        productId,
+        newSelectedOption
     }
 })
 
-export const changeCartSelectedOption = (productId,name,value) => ({
-    type:CART_SELECTED_OPTION,
-    payload:{
+export const changeCartSelectedOption = (productId, name, value) => ({
+    type: CART_SELECTED_OPTION,
+    payload: {
         productId,
         name,
         value
@@ -58,8 +59,8 @@ export const changeCartSelectedOption = (productId,name,value) => ({
 })
 
 export const deleteCartItem = (productId) => ({
-    type:DELETE_ITEM_IN_CART,
-    payload:{
+    type: DELETE_ITEM_IN_CART,
+    payload: {
         productId
     }
 })

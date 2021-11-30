@@ -39,12 +39,18 @@ const reducer = (state = defaultState, action) => {
             const isProductInCart = state.cart.find(item => item.id === action.payload.product.id)
             if (isProductInCart) {
                 updatedCart = state.cart.map(item => {
-                    if (item.id === isProductInCart.id) item.quantity += 1
+                    if (item.id === isProductInCart.id) {
+                        item.selectedOptions = item.selectedOptions.concat(action.payload.product.selectedOptions)
+                        item.quantity += 1
+                        item.previousOptionIndex = item.activeOptionIndex
+                        item.activeOptionIndex = item.selectedOptions.length - 1
+                    }
                     return item
                 })
             }
             else {
-                updatedCart = state.cart.concat({ ...action.payload.product, quantity: 1 })
+                const selectedOptions = [action.payload.product.selectedOptions]
+                updatedCart = state.cart.concat({ ...action.payload.product, quantity: 1, selectedOptions, activeOptionIndex: selectedOptions.length - 1, previousOptionIndex: selectedOptions.length - 1 })
             }
 
             result = { ...state, cart: updatedCart }
@@ -54,13 +60,23 @@ const reducer = (state = defaultState, action) => {
             let cartUpdate = []
             if (action.payload.mutationType === 'add') {
                 cartUpdate = state.cart.map(item => {
-                    if (item.id === action.payload.productId) item.quantity += 1
+                    if (item.id === action.payload.productId) {
+                        item.selectedOptions = item.selectedOptions.concat(action.payload.newSelectedOption)
+                        item.quantity += 1
+                        item.previousOptionIndex = item.activeOptionIndex
+                        item.activeOptionIndex = item.selectedOptions.length - 1
+                    }
                     return item
                 })
             }
             else {
                 cartUpdate = state.cart.map(item => {
-                    if (item.id === action.payload.productId) item.quantity -= 1
+                    if (item.id === action.payload.productId) {
+                        item.selectedOptions = item.selectedOptions.filter((option, optionIndex, arr) => optionIndex !== arr.length - 1)
+                        item.quantity -= 1
+                        item.previousOptionIndex = item.activeOptionIndex
+                        item.activeOptionIndex = item.selectedOptions.length - 1
+                    }
                     return item
                 })
             }
@@ -68,19 +84,19 @@ const reducer = (state = defaultState, action) => {
             break;
 
 
-        case CART_SELECTED_OPTION:
-            let cartToUpdate = state.cart.find(item => item.id === action.payload.productId)
-            cartToUpdate.selectedOptions = {
-                ...cartToUpdate.selectedOptions,
-                [action.payload.name]: action.payload.value
-            }
+        // case CART_SELECTED_OPTION:
+        //     const cartToUpdate = state.cart.find(item => item.id === action.payload.productId)
+        //     cartToUpdate.selectedOptions = {
+        //         ...cartToUpdate.selectedOptions,
+        //         [action.payload.name]: action.payload.value
+        //     }
 
-            const newUpdate = state.cart.map(item => {
-                if (item.id === action.payload.productId) return cartToUpdate
-                return item
-            })
-            result = { ...state, cart: newUpdate }
-            break;
+        //     const newUpdate = state.cart.map(item => {
+        //         if (item.id === action.payload.productId) return cartToUpdate
+        //         return item
+        //     })
+        //     result = { ...state, cart: newUpdate }
+        //     break;
 
         case DELETE_ITEM_IN_CART:
             const filteredCart = state.cart.filter(item =>
