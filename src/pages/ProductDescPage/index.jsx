@@ -8,6 +8,7 @@ import { getPriceInCurrencySelected, setAtrributesDefault } from "../../utils";
 import {
   MainContainer,
   PDBigImage,
+  PDBigImageWrapper,
   PDButton,
   PDDesc,
   PDDetails,
@@ -80,24 +81,20 @@ class index extends React.Component {
     const productName = nameArr.length > 3 ? nameArr[0] : nameArr.join(" ");
     const productShortDesc =
       nameArr.length > 3 ? nameArr.slice(1).join(" ") : "";
-    let price = {};
 
-    if (productData.prices) {
-      price = getPriceInCurrencySelected(
-        productData.prices,
-        this.props.currency
-      );
-    }
+    const price = productData.prices
+      ? getPriceInCurrencySelected(productData.prices, this.props.currency)
+      : {};
 
-    let smallImages = [];
-    let largeImage = "";
-    if (productData.gallery) {
-      smallImages =
-        productData.gallery.length > 3
-          ? productData.gallery.slice(0, 3)
-          : productData.gallery;
-      largeImage = productData.gallery[this.state.selectedSmallImage];
-    }
+    const smallImages = productData.gallery
+      ? productData.gallery.length > 3
+        ? productData.gallery.slice(0, 3)
+        : productData.gallery
+      : [];
+
+    const largeImage = productData.gallery
+      ? productData.gallery[this.state.selectedSmallImage]
+      : "";
 
     return (
       <>
@@ -117,7 +114,9 @@ class index extends React.Component {
               ))}
             </SmallSizes>
             <MainContainer>
-              <PDBigImage src={largeImage} alt="big-item-image" />
+              <PDBigImageWrapper outOfStock={!productData.inStock}>
+                <PDBigImage src={largeImage} alt="big-item-image" />
+              </PDBigImageWrapper>
               <PDDetails>
                 <PDName>{productName}</PDName>
                 <PDDesc>{productShortDesc}</PDDesc>

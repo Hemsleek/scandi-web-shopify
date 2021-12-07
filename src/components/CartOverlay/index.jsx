@@ -34,7 +34,7 @@ class index extends React.Component {
         ? this.props.cart.slice(0, 2)
         : this.props.cart;
     const currency = this.props.selectedCurrency;
-    const total = totalCartAmount(this.props.cart, currency).toFixed(2);
+    const total = totalCartAmount(this.props.cart, currency);
 
     return (
       <CartOverlayWrapper>

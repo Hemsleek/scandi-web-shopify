@@ -35,13 +35,39 @@ export const MainContainer = styled.div`
     display:flex;
     column-gap:6.25rem; 
 `
-export const PDBigImage = styled.img`
+
+export const PDBigImageWrapper = styled.div`
+    width:38.12rem;
+    height:28.93rem;
+    transition:0.2s all ease-in-out;
+
+    ${props => props.outOfStock && css`
+        opacity:0.5;
+        &::after{
+            content:'OUT OF STOCK';
+            top:0;
+            color:#8D8F9A;
+            font-size:1.5rem;
+            position:absolute;
+            z-index:200;
+            width:38.12rem;
+            height:28.93rem;
+            display:flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+    `}
+   
+`
+
+export const PDBigImage = styled.img`  
     width:38.12rem;
     height:28.93rem;
     object-fit:contain;
     object-position:center;
-`
 
+`
 export const PDDetails = styled.div`
     display:flex;
     flex-direction: column;

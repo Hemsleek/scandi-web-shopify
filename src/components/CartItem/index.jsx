@@ -1,10 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import {
-  changeCartSelectedOption,
-  deleteCartItem,
-  mutateProductQantity,
-} from "../../store/actions";
+import { deleteCartItem, mutateProductQantity } from "../../store/actions";
 import { getPriceInCurrencySelected } from "../../utils";
 import {
   renderAttributeValue,
@@ -35,7 +31,8 @@ class index extends React.Component {
     super(props);
 
     this.state = {
-      setImage: "",
+      activeOption: 0,
+      setImage: { img: "", active: 0 },
       selectedOptions: {},
       item: {},
     };
@@ -48,103 +45,44 @@ class index extends React.Component {
 
   componentDidMount() {
     const item = this.props.cart.find((i) => i.id === this.props.cartItemId);
-    const selectedOptions = item.selectedOptions.length
-      ? item.selectedOptions[item.activeOptionIndex]
-      : {};
+    const activeOption = item.selectedOptions.length - 1;
+
+    const selectedOptions = item.selectedOptions[activeOption];
+
     this.setState({
-      setImage: item.gallery[0],
+      setImage: { img: item.gallery[0], active: 0 },
       selectedOptions,
       item,
+      activeOption,
     });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    // if (prevProps.cart.length === this.props.cart.length) {
-    //   const checkChange = prevProps.cart.some(
-    //     (item) =>
-    //       item.activeOptionIndex !==
-    //       this.props.cart.find((i) => i.id === item.id).activeOptionIndex
-    //   );
-    console.log({ previousItem: prevState.item, nextItem: this.state.item });
-    // }
-    // console.log({
-    //   currentCArt: this.props.cart,
-    //   preCart: prevProps.cart,
-    //   // Nitem: State.item,
-    //   currItem: this.state.item,
-    // });
+  componentDidUpdate(prevProps) {
     const item = this.props.cart.find((i) => i.id === this.props.cartItemId);
-    console.log({
-      previous: item.previousOptionIndex,
-      active: item.activeOptionIndex,
-    });
 
-    if (prevProps.cart.length !== this.props.cart.length) {
-      // const item = this.props.cart.find((i) => i.id === this.props.cartItemId);
-      console.log("hereeee");
-      const selectedOptions = item.selectedOptions.length
-        ? item.selectedOptions[item.activeOptionIndex]
-        : {};
+    if (this.state.activeOption !== item.selectedOptions.length - 1) {
+      const activeOption = item.selectedOptions.length - 1;
+
+      const selectedOptions = item.selectedOptions[activeOption];
+
       this.setState({
-        setImage: item.gallery[0],
         selectedOptions,
-        item,
+        activeOption,
       });
     }
 
-    // const checkActiveOptionChange = this.props.cart.reduce(
-    //   (acc, i, itemIndex) => {
-    //     console.log({ quantity: i.quantity, index: i.activeOptionIndex });
-    //     const p = this.state.item;
-    //     console.log({ pQ: p.quantity, pI: p.activeOptionIndex });
-    //     if (acc) return acc;
-    //     return (
-    //       i.id === prevProps.cart[itemIndex].id &&
-    //       i.activeOptionIndex !== prevProps.cart[itemIndex].activeOptionIndex
-    //     );
-    //   },
-    //   false
-    // );
+    if (prevProps.cart.length !== this.props.cart.length) {
+      const activeOption = item.selectedOptions.length - 1;
 
-    // console.log({
-    //   quantity: item.selectedOptions.length,
-    //   index: item.activeOptionIndex,
-    // });
+      const selectedOptions = item.selectedOptions[activeOption];
 
-    // const p = prevProps.cart.find((i) => i.id === item.id);
-    // console.log({ pQ: p.selectedOptions.length, pI: p.activeOptionIndex });
-
-    // const checkActiveOptionChange = false;
-    // console.log(checkActiveOptionChange);
-    // if (checkActiveOptionChange) {
-    //   this.setState({
-    //     selectedOptions: item.activeOptionIndex,
-    //   });
-    // }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    // console.log({
-    //   currentCart: this.props.cart[0],
-    //   nextCart: nextProps.cart[0],
-    //   Nitem: nextState.item,
-    //   currItem: this.state.item,
-    // });
-    console.log({
-      updatedItem: this.props.cart[0],
-      // nextCart: nextProps.cart[0],
-      // Nitem: nextState.item,
-      Item: this.state.item,
-    });
-    if (nextProps.cart.length === this.props.cart.length) {
-      const checkChange = nextProps.cart.some(
-        (item) =>
-          item.activeOptionIndex !==
-          this.props.cart.find((i) => i.id === item.id).activeOptionIndex
-      );
-      // console.log({ checkChange });
+      this.setState({
+        setImage: { active: 0, img: item.gallery[0] },
+        selectedOptions,
+        item,
+        activeOption,
+      });
     }
-    return true;
   }
 
   handleOptionSet(name, item) {
@@ -165,24 +103,20 @@ class index extends React.Component {
     }
     const addItem = mutationType === "add" ? this.state.selectedOptions : {};
     this.props.mutateQuantity(mutationType, id, addItem);
-    // const updatedItem = this.props.cart.find(
-    //   (i) => i.id === this.props.cartItemId
-    // );
-    // const UpdatedSelectedOptions = updatedItem.selectedOptions;
-
-    // // this.setState({
-    //   selectedOptions: UpdatedSelectedOptions[updatedItem.activeOptionIndex],
-    // });
   }
 
   handleImageChange(gallery, type) {
-    const indexOfUrl = gallery.indexOf(this.state.setImage);
-    if (type === "next" && indexOfUrl !== gallery.length - 1) {
-      this.setState({ setImage: gallery[indexOfUrl + 1] });
+    const active = this.state.setImage.active;
+    if (type === "next" && active !== gallery.length - 1) {
+      this.setState({
+        setImage: { img: gallery[active + 1], active: active + 1 },
+      });
       return null;
     }
-    if (type === "previous" && indexOfUrl !== 0) {
-      this.setState({ setImage: gallery[indexOfUrl - 1] });
+    if (type === "previous" && active !== 0) {
+      this.setState({
+        setImage: { img: gallery[active - 1], active: active - 1 },
+      });
       return null;
     }
   }
@@ -283,7 +217,7 @@ class index extends React.Component {
                   src="/assets/vectors/arrow.svg"
                   alt="chevron-arrow"
                 />
-                <ItemImage src={this.state.setImage} alt="cart-item" />
+                <ItemImage src={this.state.setImage.img} alt="cart-item-img" />
               </ItemDisplay>
             </ItemDisplayContainer>
           </CartItemContainer>
@@ -303,8 +237,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   mutateQuantity: (mutationType, productId, newSelectedOption) =>
     dispatch(mutateProductQantity(mutationType, productId, newSelectedOption)),
-  changeCartSelectedOption: (productId, name, item) =>
-    dispatch(changeCartSelectedOption(productId, name, item)),
   deleteCartItem: (productId) => dispatch(deleteCartItem(productId)),
 });
 

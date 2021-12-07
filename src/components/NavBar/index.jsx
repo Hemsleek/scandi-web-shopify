@@ -83,6 +83,7 @@ class index extends React.Component {
   }
 
   currencyClickAway(event) {
+    if (event.target.dataset.name === "currency-box") return null;
     if (!this.state.showFilterOptions) return null;
     if (
       this.currencyBox.current &&
@@ -115,9 +116,15 @@ class index extends React.Component {
         </Link>
         <SideActionsWrapper>
           <SideActions>
-            <Filter onClick={() => this.toggleFilter()}>
-              <CurrencyDisplay>{this.props.currency}</CurrencyDisplay>
+            <Filter
+              data-name="currency-box"
+              onClick={() => this.toggleFilter()}
+            >
+              <CurrencyDisplay data-name="currency-box">
+                {this.props.currency}
+              </CurrencyDisplay>
               <ImgWrapper
+                data-name="currency-box"
                 src="/assets/vectors/caret-arrow.svg"
                 alt="caret-arrow"
                 rotate={this.state.showFilterOptions === true ? "true" : ""}

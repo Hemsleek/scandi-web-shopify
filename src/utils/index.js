@@ -1,7 +1,10 @@
 
 export const getPriceInCurrencySelected = (prices, selectedCurrency) => {
-    let price = prices.find(price => price.currency === selectedCurrency)
-    if (!price) price = { currency: '', amount: '' }
+    const price = prices.find(price => price.currency === selectedCurrency)
+    if (!price) {
+        const defaultPrice = { currency: '', amount: '' }
+        return defaultPrice
+    }
 
     return price
 
@@ -10,7 +13,6 @@ export const getPriceInCurrencySelected = (prices, selectedCurrency) => {
 export const setAtrributesDefault = (product) => {
     const selectedOptions = {}
     const { attributes } = product
-    console.log({ attributes })
 
     attributes.forEach(attribute => {
         selectedOptions[attribute.name] = attribute.items.length > 0 ? attribute.items[0] : null
@@ -22,9 +24,9 @@ export const setAtrributesDefault = (product) => {
 
 export const totalCartAmount = (cartItems, selectedCurrency) => {
 
-    return cartItems.reduce((acc, item) => {
+    return Number(cartItems.reduce((acc, item) => {
         const price = item.prices.find(price => price.currency === selectedCurrency).amount
         const itemAmount = item.quantity * price
         return acc + itemAmount
-    }, 0)
+    }, 0)).toLocaleString()
 }
